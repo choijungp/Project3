@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>인텔리어</title>
+    <title>쇼핑몰 모형</title>
     <link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -75,7 +75,7 @@
                     ResultSet rs2 = null;
                     Statement stmt2  = con.createStatement();
 
-                    String SQL2 = "select * from product";
+                    String SQL2 = "select * from product order by product_view_count DESC";
                     rs2 = stmt2.executeQuery(SQL2);
                 %>
                 <tr>
@@ -88,11 +88,11 @@
                                     <%
                   int cnt2 = 0;
                   while (rs2.next()){
-                     int goodscd      = rs.getInt("product_id");
-                     String goodsnm      = rs.getString("product_name");
+                     int goodscd      = rs2.getInt("product_id");
+                     String goodsnm      = rs2.getString("product_name");
 
-                     int unitprice         = rs.getInt("product_price");
-                     String goodsimg1   = rs.getString("product_image");
+                     int unitprice         = rs2.getInt("product_price");
+                     String goodsimg1   = rs2.getString("product_image");
                %>
                                 <td width="200" align="center" valign="top">
                                     <table width="190" border="0" cellspacing="0" cellpadding="0"><!- table4>
