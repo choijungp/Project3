@@ -92,7 +92,7 @@
                      String goodsnm      = rs2.getString("product_name");
 
                      int unitprice         = rs2.getInt("product_price");
-                     String goodsimg1   = rs2.getString("product_image");
+                     String goodsimg1   = rs2.getString("product_thumnail");
                %>
                                 <td width="200" align="center" valign="top">
                                     <table width="190" border="0" cellspacing="0" cellpadding="0"><!- table4>
