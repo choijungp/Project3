@@ -39,7 +39,7 @@
                      String goodsnm      = rs.getString("product_name");
 
                      int unitprice         = rs.getInt("product_price");
-                     String goodsimg1   = rs.getString("product_image");
+                     String goodsimg1   = rs.getString("product_thumnail");
                %>
                                 <td width="200" align="center" valign="top">
                                     <table width="190" border="0" cellspacing="0" cellpadding="0"><!- table4>
