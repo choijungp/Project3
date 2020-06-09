@@ -3,27 +3,66 @@
 <% request.setCharacterEncoding("utf-8"); %>
 <%@ include file = "/includes/dbinfo.jsp" %>
 <HTML>
+<%
+		String id = (String)session.getAttribute("G_ADMIN_ID");
+		if (id == null)	
+		{
+			out.print("<script type=text/javascript>");
+			out.print("alert('관리자 로그인을 하시기 바랍니다.!!!');");
+			out.print("location.href = 'admin_index.jsp';");
+			out.print("</script>");
+		}
 
+		String in_sort	= request.getParameter("sort");
+		if (in_sort == null) in_sort = "";
+%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>관리자 상품리스트</title>
 <link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </head>
+<script type="text/javascript">
+	function KeyNumber(){
+		var event_key=event.KeyCode;
+
+		if(event_key<48||event_key>57&&(event_key!=8&&event_key!=46)){
+			event.returnValue=false;
+		}
+	}
+	function orderby(){
+		document.select_frm.submit();
+	}
+</script>
 
 <BODY>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="center" valign="top"><table width="815" border="0" cellspacing="0" cellpadding="0">
 			<%@ include file="/includes/admin_top.jsp" %>
-      <tr>
-        <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
-      </tr>
+		<tr>
+			<td>
+				<img src="/icons/sub_bg.png" width="810"/>
+			</td>
+		</tr>
       <tr>
         <td align="center" valign="top">
 				<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="547" height="45" align="left" class="new_tit">상품리스트</td>
           </tr>
+		  <tr>
+			  <td colspan="2" align="left" valign="top">
+				  <FORM name="select_frm" id="select_frm" action="goodslist.jsp" METHOD="post">
+				  <SELECT NAME="sort" id="sort" class="sort_select" onchange="orderby()">
+					  <OPTION VALUE="1" <% if(in_sort.equals("1")) out.print (" selected"); %>>최신순</OPTION>
+					  <OPTION VALUE="2" <% if(in_sort.equals("2")) out.print (" selected"); %>>인기순</OPTION>
+					  <OPTION VALUE="3" <% if(in_sort.equals("3")) out.print (" selected"); %>>낮은 가격순</OPTION>
+					  <OPTION VALUE="4" <% if(in_sort.equals("4")) out.print (" selected"); %>>높은 가격순</OPTION>
+				  </SELECT>
+				  <br><br>
+				  </FORM>
+			  </td>
+		  </tr>
           <tr>
             <td colspan="2" align="left" valign="top">
 						<table width="100%" border="0" cellspacing="1" cellpadding="7" bgcolor="#D7D7D7">
@@ -45,8 +84,22 @@
 							ResultSet rs = null, rs2 = null;
 								
 							Statement stmt  = con.createStatement();
+							String SQL = null;
+							
+							if(in_sort.equals("1")||in_sort.equals("")){
+								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product";
+							}
+							else if(in_sort.equals("2")){
+								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product ORDER BY product_view_count DESC";
+							}
+							else if(in_sort.equals("3")){
+								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product ORDER BY product_price ASC";
+							}
+							else if(in_sort.equals("4")){
+								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product ORDER BY product_price DESC";
+							}
 
-							String SQL = "SELECT product_id, product_name, category, product_price, seller_id FROM product";
+
 							rs2 = stmt.executeQuery(SQL);
 
 							int totalRecords	= 0;			// ResultSet 객체 내의 레코드 수를 저장하기 위한 변수 
@@ -76,7 +129,7 @@
 								%>
               <tr>
 
-				  				<td align="center" bgcolor="#FFFFFF"><a href="/admin/goodsinfo_read.jsp?product_id=<%= product_id %>"><%= product_name %></a></td>
+				  				<td align="center" bgcolor="#FFFFFF"><a href="/admin/goodsinfo_update.jsp?product_id=<%= product_id %>"><%= product_name %></a></td>
 								<td align="center" bgcolor="#FFFFFF"><%= category		%></td>
 								<td align="center" bgcolor="#FFFFFF">
 										<% 
@@ -147,9 +200,6 @@
 								}
 							%>
 								</td>
-							</tr>
-              <tr>
-								<td colspan = 7 align="center" bgcolor="#FFFFFF"><a href="/admin/goodsinfo_insert1.jsp">신규등록</a></td>
 							</tr>
 						</table>
 				</table>
