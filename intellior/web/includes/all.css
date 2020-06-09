@@ -1,0 +1,131 @@
+@charset "utf-8";
+/* CSS Document */
+
+body,td,th {font-family: "나눔고딕";font-size: 12px;color: #333;margin-left: 0px;margin-top: 0px;}
+
+a {font-family: "나눔고딕";font-size: 12px;color: #333;}
+a:link {text-decoration: none;}
+a:visited {text-decoration: none;}
+a:hover {text-decoration: none;color: #28c9eb;}
+a:active {text-decoration: none;}
+.notice_padd {
+	padding-top: 26px;
+}
+
+a.navi {font-family: "휴먼둥근헤드라인";font-size: 20px;color: #2e8dd4; font-weight:normal;} /*font, color 수정*/
+a:link.navi {text-decoration: none;}
+a:visited.navi {text-decoration: none;}
+a:hover.navi {text-decoration: none;color: #28c9eb;}
+a:active.navi {text-decoration: none;}
+.notice_padd {
+	padding-top: 26px;
+}
+.notice_padd {
+	padding-left: 50px;
+}
+
+.back_image{
+	background-size: cover;
+}
+
+.list_tit {
+	font-family: "굴림";
+	font-size: 12px;
+	line-height: 21px;
+	font-weight: bold;
+	color: #2e8dd4;
+}
+
+.list_con {
+	font-family: "굴림";
+	font-size: 11px;
+	line-height: 16px;
+	color: #333;
+}
+.ul {
+	padding: 0px; /*padding 수정*/
+}
+
+.list {
+	list-style-image: url(/icons/jjum.png);
+	list-style-type: none;
+	display:inline-block;
+	padding-left:50px;
+}
+.list2_tit {
+	font-family: "굴림";
+	font-size: 12px;
+	line-height: 21px;
+	font-weight: bold;
+	color: #2e8dd4;
+}
+
+.new_tit {
+	font-family: "Times New Roman";
+	font-size: 15px;
+	font-weight: bold;
+	color: #2e8dd4;
+}
+
+div.search_div{
+	height: 18px;
+	width: 200px;
+	border: 0px;
+	background: #ffffff;
+}
+
+input.search_input{
+	font-size: 16px;
+	width: 163px;
+	height: 35px;
+	padding: 10px;
+	border: 1px solid #7f7f7f;
+	outline: none;
+	float: left;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+button.search_button{
+	width: 37px;
+	height: 35px;
+	border: 1px solid #41719c;
+	background: #deebf7;
+	outline: none;
+	float: right;
+	color: #ffffff;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+input.id_button{
+	width: 62px;
+	height: 25px;
+	border: 1px solid #686868;
+	background: #2d89ce;
+	outline: none;
+	font-size: 12px;
+	color: #ffffff;
+	border-radius: 8px;
+}
+
+input.submit_button{
+	width: 100%;
+	height: 30px;
+	border: 0px;
+	background: #2d89ce;
+	outline: none;
+	font-size: 13px;
+	color: #ffffff;
+	border-radius: 5px;
+}
+
+input.info_text{
+	border: 1px solid #3c3f41;
+	border-radius: 12px;
+}
+
+select.box_select{
+	border: 1px solid #3c3f41;
+	border-radius: 12px;
+}
