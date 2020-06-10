@@ -129,3 +129,8 @@ select.box_select{
 	border: 1px solid #3c3f41;
 	border-radius: 12px;
 }
+
+select.sort_select{
+	font-family: "Times New Roman";
+	border-radius: 3px;
+}
