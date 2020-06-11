@@ -74,21 +74,21 @@
 									<%
 										if(review_grade.equals("1"))
 										{ %>
-											<td align="center" bgcolor="#FFFFFF">★☆☆☆☆☆</td>
+											<td align="center" bgcolor="#FFFFFF">★☆☆☆☆</td>
 									<%
 										}
 									%>
 									<%
 										if(review_grade.equals("2"))
 										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★☆☆☆☆</td>
+									<td align="center" bgcolor="#FFFFFF">★★☆☆☆</td>
 									<%
 										}
 									%>
 									<%
 										if(review_grade.equals("3"))
 										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★☆☆☆</td>
+									<td align="center" bgcolor="#FFFFFF">★★★☆☆</td>
 									<%
 										}
 									%>

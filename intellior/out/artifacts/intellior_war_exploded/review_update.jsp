@@ -1,77 +1,93 @@
-﻿<%@ page language="java" contentType="text/html; charset=utf-8" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<link href="/includes/all.css" rel="stylesheet" type="text/css"/>
+﻿<%@ page language="java" import="java.util.*" import="java.sql.*" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<% request.setCharacterEncoding("utf-8"); %>
+<%@ include file = "/includes/dbinfo.jsp" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<script type="text/javascript">
-		window.valid_check = function ()
-		{
-			if (document.r_insert_frm.review_grade.value == "")
-			{
-				alert("평점을 선택하여 주시기 바랍니다.");
-				document.r_insert_frm.review_grade.focus();
-				return false;
-			}
-			document.r_insert_frm.submit();
-		}
-
-		function KeyNumber()
-		{
-			var event_key = event.keyCode;
-
-			if((event_key < 48 || event_key > 57) && (event_key != 8 && event_key != 46))
-			{
-				event.returnValue=false;
-			}
-		}
-
-	</script>
-	<TITLE> 리뷰 등록 </TITLE>
+	<TITLE>리뷰 수정</TITLE>
 	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </HEAD>
-<%
-	String u_id = (String)session.getAttribute("G_ID");
-	if (u_id == null)
+
+<script language=javascript>
+	function valid_check()
 	{
-		out.print("<script type=text/javascript>");
-		out.print("alert('로그인을 하시기 바랍니다.!!!');");
-		out.print("location.href = '/seller/seller_index.jsp';");
-		out.print("</script>");
+		if (document.review_update_form.review_grade.value == "")
+		{
+			alert("카테고리를 입력하여 주시기 바랍니다.");
+			document.review_update_form.category.focus();
+			return false;
+		}
+
+		document.review_update_form.action = "./review_update_ok.jsp";
+		document.review_update_form.submit();
 	}
+
+	function KeyNumber()
+	{
+		var event_key = event.keyCode;
+
+		if((event_key < 48 || event_key > 57) && (event_key != 8 && event_key != 46))
+		{
+			event.returnValue=false;
+		}
+	}
+
+	function delete_check() {
+		document.review_update_form.action = "./review_delete.jsp?review_id=" + document.review_update_form.review_id.value;
+		document.review_update_form.submit();
+	}
+</script>
+
+<%
+
+	ResultSet rs = null, rs2 = null, rs3 = null;
+	Statement stmt = con.createStatement();
+
+	try
+	{
+		String review_id = request.getParameter("review_id");
+
+		String strSQL = "SELECT * FROM review where review_id ='" + review_id + "'";
+		rs = stmt.executeQuery(strSQL);
+
+		if (rs.next()){
+			String review_title = rs.getString("review_title");
+			String product_id = rs.getString("product_id");
+			String review_grade = rs.getString("review_grade");
+			String review_image = rs.getString("review_image");
+			String review_contents = rs.getString("review_contents");
+
 %>
 <BODY>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<td align="center" valign="top">
-			<table width="815" border="0" cellspacing="0" cellpadding="0">
-				<%@ include file="/includes/top.jsp" %>
-				<tr>
-					<td>
-						<img src="/icons/sub_bg.png" width="810"/>
-					</td>
-				</tr>
-
-				<%
-					String product_id = request.getParameter("product_id");
-				%>
-				<tr>
-					<td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td width="547" height="45" align="left" class="new_tit">리뷰 등록</td>
-						</tr>
-						<tr>
-							<FORM NAME ="r_insert_frm" ACTION = "./review_insert_ok.jsp" METHOD = "post" enctype="multipart/form-data" >
+<FORM NAME = "review_update_form" METHOD = "post" enctype = "multipart/form-data">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td align="center" valign="top">
+				<table width="815" border="0" cellspacing="0" cellpadding="0">
+					<%@ include file="/includes/top.jsp" %>
+					<tr>
+						<td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td width="547" height="45" align="left" class="new_tit">리뷰 수정</td>
+							</tr>
+							<tr>
 								<td align="center">
 									<table width="100%" border="0" cellspacing="1" cellpadding="7" bgcolor="#D7D7D7">
 										<tr>
-											<td width="24%" align="left" bgcolor="#EEEEEE">상품번호</td>
+											<td width="24%" align="left" bgcolor="#EEEEEE">상품 코드</td>
 											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "product_id" VALUE=<%= product_id %> readonly></td>
 										</tr>
 										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">리뷰 코드</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "review_id" VALUE=<%= review_id %> readonly></td>
+										</tr>
+										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">제목</td>
-											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "30" MAXLENGTH = "50" NAME = "review_title"></td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "30" MAXLENGTH = "50" NAME = "review_title" VALUE=<%= review_title %>></td>
 										</tr>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">평점</td>
@@ -87,25 +103,58 @@
 											</td>
 										</tr>
 										<tr>
-											<td width="24%" align="left" bgcolor="#EEEEEE">첨부사진</td>
+											<td width="24%" align="left" bgcolor="#EEEEEE">변경전 이미지</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><IMG SRC="/review_images/<%= review_image%>" height=200 width=200></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">변경후 이미지</td>
 											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "file" NAME = "review_image" size = 50></td>
 										</tr>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">내용</td>
-											<td width="330" align="left" bgcolor="#FFFFFF"> <textarea rows="13" cols="40" NAME = "review_contents"> </textarea> </td>
+											<td width="330" align="left" bgcolor="#FFFFFF"> <textarea rows="13" cols="40" NAME = "review_contents"><%= review_contents %> </textarea> </td>
 										</tr>
 										<tr>
-											<td colspan=2 align=center  bgcolor="#FFFFFF"><INPUT TYPE = "button" VALUE = "등록" onclick="valid_check()" onmouseover="this.style.cursor='hand';"> </td>
+											<td colspan=2 align=center  bgcolor="#FFFFFF">
+												<INPUT TYPE = "button" VALUE = "변경" onclick="valid_check()"><INPUT TYPE = "button" VALUE = "삭제" onclick="delete_check()"></td>
 										</tr>
 									</table>
 								</td>
-							</FORM >
-						</tr>
-					</table></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+							</tr>
+							</td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</FORM>
 </BODY>
+<%
+		}
+		else
+		{
+			out.print("등록된 상품정보가 없습니다.");
+		}
+
+	} //try end
+
+	catch(SQLException e1){
+		out.println(e1.getMessage());
+	} // catch SQLException end
+
+	catch(Exception e2){
+		e2.printStackTrace();
+	} // catch Exception end
+
+	finally{
+		if (stmt  != null) stmt.close();
+		if (rs    != null) rs.close();
+		if (rs2   != null) rs2.close();
+		if (rs3   != null) rs3.close();
+		if (con   != null) con.close();
+	} // finally end
+%>
 </HTML>
