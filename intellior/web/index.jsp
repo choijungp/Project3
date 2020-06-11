@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>쇼핑몰 모형</title>
+    <title>인텔리어</title>
     <link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -35,22 +35,22 @@
                                     <%
                   int cnt = 0;
                   while (rs.next()){
-                     String goodscd      = rs.getString("product_id");
-                     String goodsnm      = rs.getString("product_name");
+                     int product_id      = rs.getInt("product_id");
+                     String product_name      = rs.getString("product_name");
 
-                     int unitprice         = rs.getInt("product_price");
-                     String goodsimg1   = rs.getString("product_thumnail");
+                     int product_price         = rs.getInt("product_price");
+                     String product_thumnail   = rs.getString("product_thumnail");
                %>
                                 <td width="200" align="center" valign="top">
                                     <table width="190" border="0" cellspacing="0" cellpadding="0"><!- table4>
                                         <tr>
-                                            <td align="center"><a href="goodsdetail.jsp?pgoodscd=<%= goodscd %>"><img src="/images/<%= goodsimg1 %>" width="170" height="170" border="0" /></a></td>
+                                            <td align="center"><a href="goodsdetail.jsp?product_id=<%= product_id %>"><img src="/images/<%= product_thumnail %>" width="170" height="170" border="0" /></a></td>
                                         </tr>
                                         <tr>
-                                            <td height="50" align="center"><a href="/goodsdetail.jsp?pgoodscd=<%= goodscd %>"><%= goodsnm %><br />
+                                            <td height="50" align="center"><a href="/goodsdetail.jsp?product_id=<%= product_id %>"><%= product_name %><br />
                                                 <%
                                                     DecimalFormat df = new DecimalFormat("###,###,##0");
-                                                    out.println(df.format(unitprice));
+                                                    out.println(df.format(product_price));
                                                 %>
                                                 원</a></td>
                                         </tr>
@@ -88,22 +88,22 @@
                                     <%
                   int cnt2 = 0;
                   while (rs2.next()){
-                     int goodscd      = rs2.getInt("product_id");
-                     String goodsnm      = rs2.getString("product_name");
+                     int product_id      = rs2.getInt("product_id");
+                     String product_name      = rs2.getString("product_name");
 
-                     int unitprice         = rs2.getInt("product_price");
-                     String goodsimg1   = rs2.getString("product_thumnail");
+                     int product_price         = rs2.getInt("product_price");
+                     String product_thumnail   = rs2.getString("product_thumnail");
                %>
                                 <td width="200" align="center" valign="top">
                                     <table width="190" border="0" cellspacing="0" cellpadding="0"><!- table4>
                                         <tr>
-                                            <td align="center"><a href="goodsdetail.jsp?pgoodscd=<%= goodscd %>"><img src="/images/<%= goodsimg1 %>" width="170" height="170" border="0" /></a></td>
+                                            <td align="center"><a href="goodsdetail.jsp?product_id=<%= product_id %>"><img src="/images/<%= product_thumnail %>" width="170" height="170" border="0" /></a></td>
                                         </tr>
                                         <tr>
-                                            <td height="50" align="center"><a href="/goodsdetail.jsp?pgoodscd=<%= goodscd %>"><%= goodsnm %><br />
+                                            <td height="50" align="center"><a href="/goodsdetail.jsp?product_id=<%= product_id %>"><%= product_name %><br />
                                                 <%
                                                     DecimalFormat df = new DecimalFormat("###,###,##0");
-                                                    out.println(df.format(unitprice));
+                                                    out.println(df.format(product_price));
                                                 %>
                                                 원</a></td>
                                         </tr>

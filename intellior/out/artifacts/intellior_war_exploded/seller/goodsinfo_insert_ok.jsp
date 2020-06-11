@@ -53,7 +53,7 @@
 		if (stmt  != null) stmt.close();
 		if (rs    != null) rs.close();
 		if (con   != null) con.close();
-		response.sendRedirect("seller_goodslist.jsp");
+		response.sendRedirect("/seller/seller_goodslist.jsp");
 	}
 
 

@@ -15,7 +15,7 @@
 			<%@ include file="/includes/top.jsp" %>
       </tr>
       <tr>
-        <td height="80" background="/icons/sub_bg.jpg">&nbsp;</td>
+        <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
       </tr>
       <tr>
 <%
@@ -32,13 +32,14 @@ ResultSet rs = null, rs2 = null;
 	
 Statement stmt  = con.createStatement();
 
-String cat1cd = request.getParameter("pcat1");
+String category = request.getParameter("category");
+String search_ = request.getParameter("search_value");
 
-String SQL = "select count(*) from goodsinfo a inner join category2 b on a.cat1cd = b.cat1cd and a.cat2cd = b.cat2cd inner join category1 c on b.cat1cd = c.cat1cd  ";
-SQL = SQL +" where a.cat1cd = '" + cat1cd + "'";
+
+String SQL = "select * from product where category ='" + category + "'";
 rs2 = stmt.executeQuery(SQL);
 
-int totalRecords	= 0;  // ResultSet 객체 내의 레코드 수를 저장하기 위한 변수 
+int totalRecords	= 0;  // ResultSet 객체 내의 레코드 수를 저장하기 위한 변수
 if (rs2.next() == false){  // 만약 테이블에 아무것도 없다면
 %>
 	<TD colspan=7><center>등록된 상품이 없습니다.</center></TD>      
@@ -52,15 +53,11 @@ else
 <%
 	totalRecords = rs2.getInt(1); 
 
-	SQL = "select top " + pageSize ;
-	SQL = SQL  + " cat1nm, cat2nm, goodscd, goodsnm, unitprice, best_yn, goodsimg1 ";
-	SQL = SQL  + " from goodsinfo a inner join category2 b on a.cat1cd = b.cat1cd and a.cat2cd = b.cat2cd "; 
-	SQL = SQL  + " inner join category1 c on b.cat1cd = c.cat1cd "; 
-	SQL = SQL  + " where a.cat1cd = '" + cat1cd + "'" ;
-	SQL = SQL  + " and goodscd not in (select top ";
-	SQL = SQL  + (currentPage - 1) * pageSize + " goodscd from goodsinfo a inner join category2 b on a.cat1cd = b.cat1cd and a.cat2cd = b.cat2cd ";
-	SQL = SQL  + " inner join category1 c on b.cat1cd = c.cat1cd order by goodscd  )";
-	SQL = SQL  + " order by goodscd ";
+	//SQL = "select top " + pageSize ;
+	SQL = "select product_name, product_price, product_id, product_thumnail ";
+	SQL = SQL  + " from product ";
+
+	SQL = SQL  + " where category = '" + category + "'" ;
 	
 	rs = stmt.executeQuery(SQL);	// 현재 페이지에 출력할 회원만 select
 
@@ -71,20 +68,17 @@ else
 
 		cnt ++;
 
-		String cat1nm			= rs.getString("cat1nm");
-		String cat2nm			= rs.getString("cat2nm");
-		String goodscd		= rs.getString("goodscd");
-		String goodsnm		= rs.getString("goodsnm");
+		String n_product_name		= rs.getString("product_name");
+		String n_product_id		= rs.getString("product_id");
 
-		int unitprice			= rs.getInt("unitprice");
-		String best_yn		= rs.getString("best_yn");
-		String goodsimg1	= rs.getString("goodsimg1");
+		int n_product_price			= rs.getInt("product_price");
+		String n_product_thumnail	= rs.getString("product_thumnail");
 
 		if ( cnt == 1) {
 	%>
           <tr>
-            <td height="45" align="left" class="new_tit"><%= cat1nm %></td>
-            <td height="45" colspan="3" align="right">HOME &lt; <%= cat1nm %></td>
+            <td height="45" align="left" class="new_tit"><%= category %></td>
+            <td height="45" colspan="3" align="right">HOME &lt; <%= category %></td>
           </tr>
           <tr>
 <%
@@ -94,20 +88,21 @@ else
 						<TABLE border = "1" cellspacing = "1" cellpadding = "2" width = "200"> 			
 						<TR>
 								<TD>
-									<a href="/goodsdetail.jsp?pgoodscd=<%= goodscd %>"><img src="/images/<%= goodsimg1 %>" height=200 width =200></a>
+									<a href="goodsdetail.jsp?product_id=<%= n_product_id %>"><img src="/images/<%= n_product_thumnail %>" height=200 width =200></a>
 								</TD>
 						</TR>			
 						<TR>
 								<TD align=center>
-									<%= goodsnm %>							
+									<%= n_product_name %>
 								</TD>
 						</TR>			
 						<TR>
 							<TD align=center>
 									<% 		
 											DecimalFormat df = new DecimalFormat("###,###,##0"); 
-											out.println(df.format(unitprice));	
-									%>					
+											out.println(df.format(n_product_price));
+									%>
+								원
 								</TD>
 						</TR>			
 						</TABLE> 			
@@ -160,7 +155,7 @@ else
 	}
 	if (currentGrp > 1){
 %>
-	 [<A href="goodsdisplay.jsp?pcat1=<%=cat1cd%>&PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
+	 [<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
 <%
 	}
 
@@ -169,7 +164,7 @@ else
 
 	while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
 %>
-		[<A href="goodsdisplay.jsp?pcat1=<%=cat1cd%>&PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp; 
+		[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp;
 <%
 		intIndex = intIndex + 1;
 		intGrpPageCount    = intGrpPageCount    - 1;
@@ -177,7 +172,7 @@ else
 
 	if (intIndex <= intTotPages){
 %>
-		[<A href="goodsdisplay.jsp?pcat1=<%=cat1cd%>&PageNum=<%= intIndex %>">다음</A>]
+		[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intIndex %>">다음</A>]
 <%
 	}
 %>
