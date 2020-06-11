@@ -1,5 +1,7 @@
 ﻿<%@ page language="java" import="java.sql.*" contentType="text/html; charset=utf-8"%>
 <% request.setCharacterEncoding("utf-8"); %>
+
+
 <%
 	String suserid	= request.getParameter("userid");
 	String spasswd	= request.getParameter("passwd");

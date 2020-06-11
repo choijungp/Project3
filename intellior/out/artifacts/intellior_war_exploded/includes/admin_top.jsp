@@ -8,7 +8,7 @@
             <td>
             <ul class="ul">
              <li class="list"><a href="goodslist.jsp" class="navi">상품리스트</a></li>
-             <li class="list"><a href="goodsinfo_insert1.jsp" class="navi">마이페이지</a></li>
+             <li class="list"><a href="mypage_admin.jsp" class="navi">마이페이지</a></li>
              <li class="list">
 
 	    <%
@@ -18,6 +18,7 @@
 		else
 			out.print("<a href = \"admin_logout.jsp\" class = \"navi\">로그아웃</a></li>");
 	    %>
+
           </td>
           </tr>
         </table></td>

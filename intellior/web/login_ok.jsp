@@ -23,6 +23,7 @@
 	{
 		session.setAttribute("G_ID", suserid);
 		session.setAttribute("G_NM", rs.getString(1));
+		session.setAttribute("BnS", suos);
 		session.setMaxInactiveInterval(60 * 60);
 
 		if(suos.equals("user")){
@@ -31,7 +32,6 @@
 		else{
 			response.sendRedirect("/seller/seller_index.jsp");
 		}
-
 	}
 	else
 		out.print("로그인을 실패하였습니다.");

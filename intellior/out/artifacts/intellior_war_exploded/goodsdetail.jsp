@@ -4,239 +4,198 @@
 <%@ include file = "/includes/dbinfo.jsp" %>
 <HTML>
 <HEAD>
-  <TITLE> 상품 상세보기</TITLE>
+    <TITLE> 상품 상세보기</TITLE>
 
-<link href="/includes/all.css" rel="stylesheet" type="text/css" />
+    <link href="/includes/all.css" rel="stylesheet" type="text/css" />
 
 </HEAD>
 
 <script type="text/javascript">
 
-function qtyChanged(){
-	var totalAmt		= (document.frm1.unitprice.value) * (document.frm1.qty.value);
-	var strTotalAmt	= totalAmt.toString();
+    function qtyChanged(){
+        var totalAmt      = (document.detail_form.product_price.value) * (document.detail_form.qty.value);
+        var strTotalAmt   = totalAmt.toString();
 
-	var temp  = "";
-	for (idx = strTotalAmt.length - 1; idx >= 0; idx--){
-    schar = strTotalAmt.charAt(idx);
-    temp	= schar  + temp;
-		if(idx % 3 == strTotalAmt.length % 3 && idx != 0){ temp = ',' + temp; }
-	}
+        var temp  = "";
+        for (idx = strTotalAmt.length - 1; idx >= 0; idx--){
+            schar = strTotalAmt.charAt(idx);
+            temp   = schar  + temp;
+            if(idx % 3 == strTotalAmt.length % 3 && idx != 0){ temp = ',' + temp; }
+        }
 
-	document.all.totalAmtView.innerHTML = temp;
-}
+        document.all.totalAmtView.innerHTML = temp;
+    }
 
-function cartAdd() {
+    function cartAdd() {
 
-	if (document.frm1.userid.value == "")
-	{
-		alert("로그인을 하여 주시기 바랍니다.");
-		return false;
-	}
+        if (document.detail_form.userid.value == "")
+        {
+            alert("로그인을 하여 주시기 바랍니다.");
+            return false;
+        }
 
-	if (document.frm1.colorcd.value == "")
-	{
-		alert("색상을 선택하여 주시기 바랍니다.");
-		document.frm1.colorcd.focus();
-		return false;
-	}
+        document.detail_form.action = "goodsCartAdd.jsp";
+        document.detail_form.submit();
+    }
 
-	if (document.frm1.sizecd.value == "")
-	{
-		alert("사이즈를 선택하여 주시기 바랍니다.");
-		document.frm1.sizecd.focus();
-		return false;
-	}
-
-	document.frm1.action = "goodsCartAdd.jsp";
-	document.frm1.submit();
-}
-
-function goMain() {
-
-	document.frm1.action = "index.jsp";
-	document.frm1.submit();
-}
+    function goView() {
+        <%
+        String p_id = request.getParameter("product_id");
+%>
+        document.detail_form.action = "./review_list.jsp?product_id='" + p_id + "'";
+        document.detail_form.submit();
+    }
 
 </script>
 
 <body>
 
-<FORM NAME = frm1 ACTION = "goodsCartAdd.jsp" METHOD = POST>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="center" valign="top">
-		<table width="815" border="0" cellspacing="0" cellpadding="0">
-			<%@ include file="/includes/top.jsp" %>
-      <tr>
-        <td height="80" background="/icons/sub_bg.jpg">&nbsp;</td>
-      </tr>
+<FORM NAME = detail_form ACTION = "goodsCartAdd.jsp" METHOD = POST>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center" valign="top">
+                <table width="815" border="0" cellspacing="0" cellpadding="0">
+                    <%@ include file="/includes/top.jsp" %>
+                    <tr>
+                        <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+                    </tr>
 
 
-<%
-String userid			=	(String)session.getAttribute("G_ID");
-if (userid == null) userid = "";
+                    <%
+                        String userid         =   (String)session.getAttribute("G_ID");
+                        String product_id = request.getParameter("product_id");
 
-ResultSet rs = null, rs2 = null;
-	
-Statement stmt  = con.createStatement();
+                        if (userid == null) userid = "";
 
-String pgoodscd = request.getParameter("pgoodscd");
+                        ResultSet rs = null, rs2 = null;
 
-String SQL = "select c.cat1nm, b.cat2nm, a.goodscd, goodsnm, unitprice, goodsimg1 from goodsinfo a ";
-SQL = SQL + " inner join category2 b on a.cat1cd = b.cat1cd and a.cat2cd = b.cat2cd ";
-SQL = SQL + " inner join category1 c on b.cat1cd = c.cat1cd ";
-SQL = SQL + " where goodscd = '" + pgoodscd + "'";
-rs = stmt.executeQuery(SQL);
+                        Statement stmt  = con.createStatement();
 
-if (rs.next() == false){  // 만약 테이블에 아무것도 없다면
-%>
-			<TR>
-				<TD colspan=2><center>등록된 상품이 없습니다</center></TD>      
-			</TR>
-<% 
-}
-else
-{	
+                        String SQL = "select category, product_name, product_view_count, product_price, product_thumnail, product_image, seller_id, product_contents from product ";
+                        SQL = SQL + " where product_id = '" + product_id + "'";
+                        rs = stmt.executeQuery(SQL);
 
-		String cat1nm			= rs.getString("cat1nm");
-		String cat2nm			= rs.getString("cat2nm");
-		String goodscd		= rs.getString("goodscd");
-		String goodsnm		= rs.getString("goodsnm");
-		int unitprice			= rs.getInt("unitprice");
-		String goodsimg1	= rs.getString("goodsimg1");
+                        if (rs.next() == false){  // 만약 테이블에 아무것도 없다면
+                    %>
+                    <TR>
+                        <TD colspan=2><center>등록된 상품이 없습니다</center></TD>
+                    </TR>
+                    <%
+                    }
+                    else
+                    {
 
-	%>
+                        String category         = rs.getString("category");
+                        String product_name         = rs.getString("product_name");
+                        int product_price         = rs.getInt("product_price");
+                        int product_view_count         = rs.getInt("product_view_count");
+                        String product_thumnail   = rs.getString("product_thumnail");
+                        String product_image   = rs.getString("product_image");
+                        String seller_id   = rs.getString("seller_id");
+                        String product_contents   = rs.getString("product_contents");
+                        product_view_count++;
 
-      <tr>
-        <td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="547" height="45" align="left" class="new_tit"<%= cat1nm %> 상세보기</td>
-            <td width="253" align="right">HOME &lt; <%= cat1nm %></td>
-          </tr>
-					<INPUT type = hidden name = userid value = <%= userid %>>
-          <tr>
-            <td colspan="2" align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td width="51%" rowspan="2" valign="top"><img src="/images/<%= goodsimg1 %>" width="400" height="400" /></td>
-                <td width="49%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="8">
-                  <tr>
-                    <td width="27%" class="line">대분류</td>
-                    <td width="73%" class="line"><%= cat1nm %></td>
-                  </tr>
-                  <tr>
-                    <td class="line">중분류</td>
-                    <td class="line"><%= cat2nm %></td>
-                  </tr>
-                  <tr>
-                    <td class="line">상품코드</td>
-                    <td class="line"><INPUT type = hidden name = goodscd value = <%= goodscd %>><%= goodscd %></td>
-                  </tr>
-                  <tr>
-                    <td class="line">상품명</td>
-                    <td class="line"><%= goodsnm %></td>
-                  </tr>
-                  <tr>
-                    <td class="line">상품가격</td>
-                    <td class="line">
-											<INPUT type = hidden name = unitprice value = <%= unitprice %>>
-											<% 
-													DecimalFormat df = new DecimalFormat("###,###,##0"); 
-													out.println(df.format(unitprice));
-											%>	원</td>
-                  </tr>
-                  <tr>
-                    <td class="line">상품색상</td>
-                    <td class="line">
-                      <label for="colorcd"></label>
-                      <select name="colorcd" id="colorcd">
-												<OPTION VALUE="">==색상 선택==</OPTION>
-												<%
-												String strSQL	= "SELECT colorcd, colornm FROM colorinfo";
-												rs2			= stmt.executeQuery(strSQL);
+                        String sql2 = "UPDATE product SET product_view_count = '" + product_view_count + "'";
+                        sql2 = sql2 + "WHERE product_id = '" + product_id + "'";
 
-												while (rs2.next()){
-													out.print("<OPTION VALUE=\"");
-													out.print(rs2.getString("colorcd"));
-													out.print("\">");
-													out.print(rs2.getString("colornm"));
-													out.println("</OPTION>");
-												}
-												%>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="line">상품크기</td>
-                    <td class="line">
-                      <label for="sizecd"></label>
-                      <select name="sizecd" id="sizecd">
-											<OPTION VALUE="">==크기 선택==</OPTION>
-											<%
-											if (rs2    != null) rs2.close();
+                        stmt.executeUpdate(sql2);
 
-											strSQL	= "SELECT sizecd, sizenm FROM sizeinfo";
-											rs2			= stmt.executeQuery(strSQL);
+                    %>
 
-											while (rs2.next()){
-												out.print("<OPTION VALUE=\"");
-												out.print(rs2.getString("sizecd"));
-												out.print("\">");
-												out.print(rs2.getString("sizenm"));
-												out.println("</OPTION>");
-											}
-											%>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="line">주문수량</td>
-                    <td class="line">
-	                  <label for="qty"></label>
-										<SELECT name = "qty" size = "1" onChange = "qtyChanged();">
-												<OPTION selected>1</OPTION>
-												<OPTION>2</OPTION>
-												<OPTION>3</OPTION>
-												<OPTION>4</OPTION>
-												<OPTION>5</OPTION>
-												<OPTION>6</OPTION>
-												<OPTION>7</OPTION>
-												<OPTION>8</OPTION>
-												<OPTION>9</OPTION>
-												<OPTION>10</OPTION>
-											</SELECT>
-                   </td>
-                  </tr>
-                  <tr>
-                    <td class="line">총금액</td>
-                    <td class="line"><SPAN id = "totalAmtView"><%= df.format(unitprice) %></SPAN>원</td>
-                  </tr>
+                    <tr>
+                        <td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="547" height="45" align="left" class="new_tit"<%= category %> 상세보기</td>
+                                <td width="253" align="right">HOME &lt; <%= category %></td>
+                            </tr>
+                            <INPUT type = hidden name = userid value = <%= userid %>>
+                            <tr>
+                                <td colspan="2" align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td width="51%" rowspan="2" valign="top"><img src="/images/<%= product_thumnail %>" width="300" height="300" /></td>
+                                        <td width="49%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="8">
+                                            <tr>
+                                                <td width="27%" class="line">카테고리</td>
+                                                <td width="73%" class="line"><%= category %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">상품코드</td>
+                                                <td class="line"><INPUT type = hidden name = product_id value = <%= product_id %>><%= product_id %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">조회수</td>
+                                                <td class="line"><INPUT type = hidden name = product_view_count value = <%= product_view_count %>><%= product_view_count %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">판매자</td>
+                                                <td class="line"><INPUT type = hidden name = seller_id value = <%= seller_id %>><%= seller_id %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">상품명</td>
+                                                <td class="line"><%= product_name %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">상품가격</td>
+                                                <td class="line">
+                                                    <INPUT type = hidden name = product_price value = <%= product_price %>>
+                                                    <%
+                                                        DecimalFormat df = new DecimalFormat("###,###,##0");
+                                                        out.println(df.format(product_price));
+                                                    %>   원</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">설명</td>
+                                                <td class="line"><%= product_contents %></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">주문수량</td>
+                                                <td class="line">
+                                                    <label for="qty"></label>
+                                                    <SELECT name = "qty" size = "1" onChange = "qtyChanged();">
+                                                        <OPTION selected>1</OPTION>
+                                                        <OPTION>2</OPTION>
+                                                        <OPTION>3</OPTION>
+                                                        <OPTION>4</OPTION>
+                                                        <OPTION>5</OPTION>
+                                                        <OPTION>6</OPTION>
+                                                        <OPTION>7</OPTION>
+                                                        <OPTION>8</OPTION>
+                                                        <OPTION>9</OPTION>
+                                                        <OPTION>10</OPTION>
+                                                    </SELECT>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="line">총금액</td>
+                                                <td class="line"><SPAN id = "totalAmtView"><%= df.format(product_price) %></SPAN>원</td>
+                                            </tr>
+                                        </table></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <input type = "button" id = "button" value = "리뷰 보기" onClick = "goView();"/>
+                                            <input type = "button" id = "button2"  value = "장바구니 담기" onClick = "cartAdd();"/>
+                                        </td>
+                                    </tr>
+                                </table></td>
+                            </tr>
+                        </table></td>
+                    </tr>
+                    <tr>
+                        <td align="center" valign="top">&nbsp;</td>
+                    </tr>
+                    <%@ include file="/includes/bottom.jsp" %>
                 </table></td>
-              </tr>
-              <tr>
-                <td align="center">
-                  <input type = "button" id = "button"  value = "장바구니 담기" onClick = "cartAdd();"/>
-                  <input type = "button" id = "button2" value = "메인으로 가기" onClick = "goMain();"/>
-                </td>
-              </tr>
-            </table></td>
-            </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td align="center" valign="top">&nbsp;</td>
-      </tr>
-			<%@ include file="/includes/bottom.jsp" %>
-    </table></td>
-  </tr>
-</table>
+        </tr>
+    </table>
 </form>
 <%
-}
-if (stmt  != null) stmt.close();
-if (rs    != null) rs.close();
-if (rs2   != null) rs2.close();
-if (con   != null) con.close();
+    }
+
+    if (stmt  != null) stmt.close();
+    if (rs    != null) rs.close();
+    if (rs2   != null) rs2.close();
+    if (con   != null) con.close();
 %>
 </body>
 </html>
