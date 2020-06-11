@@ -44,10 +44,10 @@
                                         </tr>
 
                                         <tr>
-                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="#">장바구니 확인</a></td>
+                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="goodsCart.jsp">장바구니 확인</a></td>
                                         </tr>
                                         <tr>
-                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="user_orderList.jsp">전체주문내역</a></td>
+                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="user_orderList.jsp ">전체주문내역</a></td>
                                         </tr>
                                     </table>
                                 </td>

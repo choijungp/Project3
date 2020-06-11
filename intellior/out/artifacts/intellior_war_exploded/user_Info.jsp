@@ -2,6 +2,12 @@
 <%@ page import="java.sql.*, java.text.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <%@ include file = "/includes/dbinfo.jsp" %>
+<script type="text/javascript">
+    function updateChk() {
+        document.update_user_info.action = "user_info_update.jsp";
+        document.update_user_info.submit();
+    }</script>
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,7 +16,7 @@
 </head>
 
 <body>
-
+<FORM NAME="update_user_info" ACTION="user_info_update.jsp" METHOD="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="center" valign="top">
@@ -64,9 +70,14 @@
                                 <td height="50" align="center" colspan="7" class="new_tit">전화번호</td>
                                 <td height="50" align="center" colspan="7" class="new_tit"><%=user_phone%></td>
                             </tr>
-
                         </table>
                     </td>
+                <tr>
+                    <td height="25" align="center">
+                        <input type = "button" id = "button"  value = "정보 변경"  onClick = "updateChk();"/>
+                        <input type = "button" id = "button2" value = "회원 탈퇴" />
+                    </td>
+                </tr>
                 </tr>
 
                 <%@ include file="/includes/bottom.jsp" %>
@@ -74,5 +85,6 @@
         </td>
     </tr>
 </table>
+</FORM>
 </body>
 </html>

@@ -19,6 +19,7 @@
             </tr>
             <tr>
                 <%
+                    DecimalFormat df2	= new DecimalFormat("###,###,##0");
                     String strPageNum = request.getParameter("PageNum"); // 선택된 페이지 번호 참조
                     if (strPageNum == null) {
                         strPageNum = "1";
@@ -48,14 +49,12 @@
             else
             {
             %>
-            <td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
+            <td align="center" valign="top"><table width="800" border="0" cellspacing="5" cellpadding="0">
                 <%
                     totalRecords = rs2.getInt(1);
-
-
-                    SQL = "select order_id, a.product_id,user_id,a.seller_id,order_state,order_payment, product_name,product_price,product_thumnail ";
-                    SQL = SQL  + " from intelior.order a inner join product b on a.product_id = b.product_id ";
-                    SQL = SQL +" where user_id = '" + userid + "'";
+                    SQL = "select sum(b.product_price*a.order_count),user_id,product_thumnail,order_code,a.product_id,product_name,a.seller_id,order_state,order_date,order_payment ,count(a.product_id) ";
+                    SQL = SQL +" from intelior.order a inner join product b on a.product_id = b.product_id ";
+                    SQL = SQL +" where user_id = '" + userid + "' group by order_code";
 
                     rs = stmt.executeQuery(SQL);	// 현재 페이지에 출력할 회원만 select
 
@@ -67,58 +66,80 @@
                         cnt ++;
 
                         int product_id			= rs.getInt("product_id");
+                        String product_thumnail		= rs.getString("product_thumnail");
+                        int order_count = rs.getInt("count(a.product_id)")-1;
                         String seller_id			= rs.getString("seller_id"); //seller_name으로 수정
                         int order_state		= rs.getInt("order_state");
-                        int order_id		= rs.getInt("order_id");
-                        String order_payment		= rs.getString("order_payment");
+                        String order_code		= rs.getString("order_code");
+                        int order_payment		= rs.getInt("sum(b.product_price*a.order_count)");
                         String product_name		= rs.getString("product_name");
-                        String product_thumnail		= rs.getString("product_thumnail");
+                        String order_date		= rs.getString("order_date");
 
-                        int product_price		= rs.getInt("product_price");
                         if ( cnt == 1) {
                 %>
                 <tr>
                     <td height="45" align="left" class="new_tit">주문목록</td>
-                    <td height="45" colspan="3" align="right">HOME &lt; 주문목록</td>
                 </tr>
                 <tr>
-                    <td width="10%" align="center" bgcolor="#EEEEEE">상품이미지</td>
-                    <td width="20%" align="center" bgcolor="#EEEEEE">주문번호</td>
-                    <td width="20%" align="center" bgcolor="#EEEEEE">상품명</td>
-                    <td width="10%" align="center" bgcolor="#EEEEEE">상품가격</td>
+                    <td width="10%" align="center" bgcolor="#EEEEEE" class="list2_tit">주문번호</td>
+                    <td width="10%" align="center" bgcolor="#EEEEEE" class="list2_tit">제품 이미지</td>
+                    <td width="20%" align="center" bgcolor="#EEEEEE" class="list2_tit">주문내용</td>
+                    <td width="20%" align="center" bgcolor="#EEEEEE" class="list2_tit">주문일자</td>
+                    <td width="10%" align="center" bgcolor="#EEEEEE" class="list2_tit">결제가격</td>
+                    <td width="10%" align="center" bgcolor="#EEEEEE" class="list2_tit">주문상태</td>
                 </tr>
                 <tr>
-                    <%
+                        <%
                         }
+                        String orderState="";
                     %>
                 <TR>
-                <TD>
-                    <a href="index.jsp"><img src="/images/<%= product_thumnail %>" height=80 width =80></a>
-                </TD>
-                    <TD align=center>
-                        <%= order_id %>
+                    <TD height="45" align=center>
+                        <a href="user_order_detail.jsp?order_code=<%= order_code %>"><%= order_code %>
                     </TD>
-                    <TD align=center>
-                        <%= product_name %>
+                    <TD align="center" bgcolor="#FFFFFF">
+                        <img src="/images/<%= product_thumnail %>" width="45" height="45" />
                     </TD>
-                    <TD align=center>
-                        <%
-                            DecimalFormat df = new DecimalFormat("###,###,##0");
-                            out.println(df.format(product_price));
+                    <TD height="45" align=center>
+                        <% if(order_count>0){
+                        %>
+                        <a href="user_order_detail.jsp?order_code=<%= order_code %>"><%= product_name %>외 <%= order_count %>개
+                                <% }
+                       else{
+                        %>
+                            <a href="user_order_detail.jsp?order_code=<%= order_code %>"><%= product_name %>
+                                    <% }
+                        %>
+                    </TD>
+                    <TD height="45" align=center>
+                        <%= order_date %>
+                    </TD>
+                    <TD height="45" align=center>
+                        <%=  df2.format(order_payment)%> 원
+                    </TD>
+                    <TD height="45" align=center>
+                        <% if(order_state>0){
+                        %>
+                        출고완료 - 배송중
+                        <% }
+                        else{
+                        %>
+                        배송대기
+                        <% }
                         %>
                     </TD>
                 </TR>
 
 
-                    <%
-                                pageSize_temp = pageSize_temp - 1;      // 현재 표시될 라인을 하나씩 줄임
+                <%
+                            pageSize_temp = pageSize_temp - 1;      // 현재 표시될 라인을 하나씩 줄임
 
-                                if (cnt == 3)
-                                    out.print("</TR><TR>");
-                            }
-
+                            if (cnt == 3)
+                                out.print("</TR><TR>");
                         }
-                    %>
+
+                    }
+                %>
                 </tr>
             </table></td>
             </tr>
@@ -157,7 +178,7 @@
                         }
                         if (currentGrp > 1){
                     %>
-                    [<A href="user_orderList.jsp&PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
+                    [<A href="user_orderList.jsp?PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
                     <%
                         }
 
@@ -166,7 +187,7 @@
 
                         while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
                     %>
-                    [<A href="user_orderList.jsp&PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp;
+                    [<A href="user_orderList.jsp?PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp;
                     <%
                             intIndex = intIndex + 1;
                             intGrpPageCount    = intGrpPageCount    - 1;
@@ -174,7 +195,7 @@
 
                         if (intIndex <= intTotPages){
                     %>
-                    [<A href="user_orderList.jsp&PageNum=<%= intIndex %>">다음</A>]
+                    [<A href="user_orderList.jsp?PageNum=<%= intIndex %>">다음</A>]
                     <%
                         }
                     %>
