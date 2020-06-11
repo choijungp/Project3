@@ -39,10 +39,7 @@
     }
 
     function goView() {
-        <%
-        String p_id = request.getParameter("product_id");
-%>
-        document.detail_form.action = "./review_list.jsp?product_id='" + p_id + "'";
+        document.detail_form.action = "./review_list.jsp?product_id="+document.detail_form.product_id.value;
         document.detail_form.submit();
     }
 

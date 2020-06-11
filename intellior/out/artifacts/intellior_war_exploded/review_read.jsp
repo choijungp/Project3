@@ -54,7 +54,7 @@
 		<tr>
 			<td align="center" valign="top">
 				<table width="815" border="0" cellspacing="0" cellpadding="0">
-					<%@ include file="/includes/admin_top.jsp" %>
+					<%@ include file="/includes/top.jsp" %>
 					<tr>
 						<td height="80" background="/icons/sub_bg.png">&nbsp;</td>
 					</tr>
