@@ -82,13 +82,14 @@
                     <td height="45" align=center>
                         <% if(order_state>0){
                         %>
-                        출고완료
-                        <% }
+                        배송완료<br><a href="review_insert.jsp?product_id=<%= product_id %>">[리뷰작성]
+                            <% }
                         else{
                         %>
                         배송대기
-                        <% }
+                            <% }
                         %>
+
                     </td>
                 </tr>
 
