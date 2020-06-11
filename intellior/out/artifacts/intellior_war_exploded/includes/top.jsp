@@ -24,7 +24,7 @@
                 %>
 
 
-                | <a href="#">장바구니</a> | <a href="#">주문배송조회</a> | <a href="mypage_user.jsp">마이페이지</a></td>
+                | <a href="goodsCart.jsp">장바구니</a> | <a href="user_orderList.jsp">주문배송조회</a> | <a href="mypage_user.jsp">마이페이지</a></td>
         </tr>
         <tr>
             <td align="center">

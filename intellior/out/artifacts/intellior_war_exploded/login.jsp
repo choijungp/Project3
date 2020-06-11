@@ -8,6 +8,7 @@
 	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </HEAD>
 
+
 <%
 	String id = (String)session.getAttribute("G_ID");
 	if (id != null)
