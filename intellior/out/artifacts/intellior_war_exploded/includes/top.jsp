@@ -9,6 +9,7 @@
                     String id = (String)session.getAttribute("G_ID");
                     String nm = (String)session.getAttribute("G_NM");
 
+
                     if (id == null)
                     {
                 %>
@@ -16,15 +17,24 @@
                 <%
                 }
                 else
+
                 {
+                    Statement stmt_top = con.createStatement();
+                    ResultSet rs_top ;
+                    String top_SQL = "select user_rank from user where user_id = '"+id+"'";
+                    rs_top = stmt_top.executeQuery(top_SQL);
+                    String top_user_rank="";
+                    while (rs_top.next()) {
+                        top_user_rank = rs_top.getString("user_rank");
+                    }
                 %>
-                <a href="user_info_update.jsp">회원정보변경</a> | <%= nm %> 님 환영합니다. | <a href="logout.jsp">로그아웃</a>
+                <a href="#"> <%= top_user_rank %> 등급</a> | <%= nm %> 님 환영합니다. | <a href="logout.jsp">로그아웃</a>
                 <%
                     }
                 %>
 
 
-                | <a href="goodsCart.jsp">장바구니</a> | <a href="user_orderList.jsp">주문배송조회</a> | <a href="mypage_user.jsp">마이페이지</a></td>
+                | <a href="goodsCart.jsp">장바구니</a> | <a href="#">주문배송조회</a> | <a href="mypage_user.jsp">마이페이지</a></td>
         </tr>
         <tr>
             <td align="center">

@@ -25,6 +25,11 @@
 		document.review_read_form.action = "./review_list.jsp?product_id=" + document.review_read_form.product_id.value;
 		document.review_read_form.submit();
 	}
+
+	function goModify() {
+		document.review_read_form.action = "./review_update.jsp?review_id=" + document.review_read_form.review_id.value;
+		document.review_read_form.submit();
+	}
 </script>
 
 <%
@@ -35,6 +40,7 @@
 	try
 	{
 		String review_id = request.getParameter("review_id");
+		String s_id = (String)session.getAttribute("G_ID");
 
 		String strSQL = "SELECT * FROM review where review_id ='" + review_id + "'";
 		rs = stmt.executeQuery(strSQL);
@@ -71,6 +77,10 @@
 											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "product_id" VALUE=<%= product_id %> readonly></td>
 										</tr>
 										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">리뷰 코드</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "review_id" VALUE=<%= review_id %> readonly></td>
+										</tr>
+										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">제목</td>
 											<td width="76%" align="left" bgcolor="#FFFFFF"><%= review_title %></td>
 										</tr>
@@ -88,6 +98,14 @@
 										</tr>
 										<tr>
 											<td colspan=2 align=center  bgcolor="#FFFFFF">
+											<%
+												if(s_id == user_id)
+												{
+											%>
+													<INPUT TYPE = "button" VALUE = "수정" onclick="goModify()">
+											<%
+												}
+											%>
 												<INPUT TYPE = "button" VALUE = "목록 돌아가기" onclick="goList()"></td>
 										</tr>
 									</table>
@@ -105,7 +123,7 @@
 </FORM>
 </BODY>
 <%
-		}
+	}
 		else
 		{
 			out.print("등록된 리뷰가 없습니다.");
