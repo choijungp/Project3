@@ -14,7 +14,7 @@
 	{
 		if (document.review_update_form.review_grade.value == "")
 		{
-			alert("카테고리를 입력하여 주시기 바랍니다.");
+			alert("평점을 입력하여 주시기 바랍니다.");
 			document.review_update_form.category.focus();
 			return false;
 		}

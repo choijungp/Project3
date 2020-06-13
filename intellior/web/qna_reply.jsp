@@ -1,124 +1,116 @@
-﻿<%@ page language="java" contentType="text/html; charset=utf-8" %>
-<%@ page import = "java.sql.*, java.util.*" %>
+﻿<%@ page language="java" import="java.util.*" import="java.sql.*" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <% request.setCharacterEncoding("utf-8"); %>
-
+<%@ include file = "/includes/dbinfo.jsp" %>
+<%@ page import="java.sql.ResultSet" %>
+<link href="/includes/all.css" rel="stylesheet" type="text/css"/>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-<TITLE>답변형 게시판 답변달기</TITLE>
+	<script type="text/javascript">
+		window.valid_check = function ()
+		{
+			if (document.q_write.qna_title.value == "")
+			{
+				alert("제목을 입력바랍니다.");
+				document.q_write.qna_title.focus();
+				return false;
+			}
 
-<script language=javascript>
-function valid_check()
-{
-	if (frm1.writername.value.length < 1) {
-		alert("작성자명을 입력하세요.");
-		document.frm1.writername.focus(); 
-		return false;
-	}
+			if (document.q_write.qna_contents.value == "")
+			{
+				alert("내용을 입력바랍니다.");
+				document.q_write.qna_contents.focus();
+				return false;
+			}
+			document.q_write.submit();
+		}
 
-	if (frm1.title.value.length < 1) {
-		alert("제목을 입력하세요.");
-		document.frm1.title.focus(); 
-		return false;
-	}
+		function KeyNumber()
+		{
+			var event_key = event.keyCode;
 
-	if (frm1.contents.value.length < 1) {
-		alert("내용을 입력하세요.");
-		document.frm1.contents.focus(); 
-		return false;
-	}
-
-	document.frm1.submit();
-}
-
-function submit_list()
-{
-	location.href = "boardClist.jsp";
-}
-
-</SCRIPT>
+			if((event_key < 48 || event_key > 57) && (event_key != 8 && event_key != 46))
+			{
+				event.returnValue=false;
+			}
+		}
+	</script>
+	<%
+		ResultSet rs = null;
+		Statement stmt = con.createStatement();
+	%>
+	<TITLE> 답변 등록 </TITLE>
+	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </HEAD>
-
 <BODY>
-<%@ include file = "/chap10/include/dbinfo.inc" %>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" valign="top">
+			<table width="815" border="0" cellspacing="0" cellpadding="0">
+				<%@ include file="/includes/seller_top.jsp" %>
+				<tr>
+					<td>
+						<img src="/icons/sub_bg.png" width="810"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="547" height="45" align="left" class="new_tit">답변 등록</td>
+						</tr>
+						<tr>
+							<FORM NAME ="q_write" ACTION = "/qna_reply_ok.jsp" METHOD = "post" enctype="multipart/form-data" >
+								<%
+									String qna_id = request.getParameter("qna_id");
 
-<%
-PreparedStatement pstmt = null;
-ResultSet rs = null;
-
-try
-{
-	String num = request.getParameter("pnum"); 
-
-	String strSQL = "SELECT * FROM boardC WHERE num = ?";
-	pstmt = con.prepareStatement(strSQL);
-	pstmt.setInt(1, Integer.parseInt(num));
-
-	rs = pstmt.executeQuery();
-	rs.next();
-
-	String title	= rs.getString("title");
-	String writer	= rs.getString("writer");
-	String contents	= rs.getString("contents");
-
-%>
-	<h3>답변형 게시판 답변달기</h3>
-	<BODY>
-	<FORM NAME = "frm1" ACTION = "boardCreply_ok.jsp" METHOD = "POST">
-	<INPUT TYPE = "hidden" NAME = "pnum"  VALUE = <%= num %>>
-	<TABLE WIDTH = "500" BORDER = "1" CellPadding = "0" CellSpacing = "0">
-		<TR>
-			<TD WIDTH = "40%" ALIGN = "left">작성자명</TD>
-			<TD WIDTH = "60%" ALIGN = "left">
-				<INPUT TYPE = "text" SIZE = "15" MAXLENGTH = "10" NAME = "writername" >
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH = "40%" ALIGN = "left">제목</TD>
-			<TD WIDTH = "60%" ALIGN = "left">
-				<INPUT TYPE = "text" SIZE = "50" MAXLENGTH = "50" NAME = "title" VALUE="[답변]<%= title %>">
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH = "40%" ALIGN = "left">내용</TD>
-			<TD WIDTH = "60%" ALIGN = "left">
-				<TEXTAREA NAME="contents" ROWS=5 COLS=50></TEXTAREA>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH = "100%" ALIGN = "center" COLSPAN = "2">
-			<TABLE>
-				<TR>
-					<TD WIDTH = "33%" ALIGN = "center">
-						<INPUT TYPE = "reset" VALUE = "다시 작성">
-					</TD>
-					<TD WIDTH = "34%" ALIGN = "center">
-						<INPUT TYPE = "button" VALUE = "등록" onClick="valid_check()">
-					</TD>
-					<TD WIDTH = "33%" ALIGN = "center">
-						<INPUT TYPE = "button" VALUE = "목록으로" onClick = "submit_list()">
-					</TD>
-				</TR>
-			</TABLE>
-			</TD>
-		</TR>
-	</TABLE>
-	</FORM>   
-	</BODY>
-
-<%
-} //try end
-catch(SQLException e1){
-	out.println(e1.getMessage());
-} // catch SQLException end
-
-catch(Exception e2){
-	e2.printStackTrace();
-} // catch Exception end
-
-finally{
-	if (pstmt != null) pstmt.close();
-	if (rs    != null) rs.close();
-	if (con   != null) con.close();
-} // finally end
-%>
+									String strSQL = "SELECT * FROM qna where qna_id ='" + qna_id + "'";
+									rs = stmt.executeQuery(strSQL);
+									String product_id = null;
+									if (rs.next()) {
+										product_id = rs.getString("product_id");
+									}
+								%>
+								<td align="center">
+									<table width="100%" border="0" cellspacing="1" cellpadding="7" bgcolor="#D7D7D7">
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">상품번호</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "product_id" VALUE=<%= product_id %> readonly></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">질문 번호</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "qna_id" VALUE=<%= qna_id %> readonly></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">제목</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "30" MAXLENGTH = "50" NAME = "qna_title"></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">내용</td>
+											<td width="330" align="left" bgcolor="#FFFFFF"> <textarea rows="13" cols="40" NAME = "qna_contents"> </textarea> </td>
+										</tr>
+										<TR>
+											<TD WIDTH = "100%" ALIGN = "center" COLSPAN = "2" bgcolor="#FFFFFF">
+												<TABLE>
+													<TR>
+														<TD WIDTH = "33%" ALIGN = "center" bgcolor="#FFFFFF">
+															<INPUT TYPE = "reset" VALUE = "다시 작성">
+														</TD>
+														<TD WIDTH = "34%" ALIGN = "center" bgcolor="#FFFFFF">
+															<INPUT TYPE = "button" VALUE = "등록" onClick="valid_check()">
+														</TD>
+													</TR>
+												</TABLE>
+											</TD>
+										</TR>
+									</table>
+								</td>
+							</FORM >
+						</tr>
+					</table></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</BODY>
 </HTML>

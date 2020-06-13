@@ -1,142 +1,195 @@
-﻿<%@ page language="java" import="java.sql.*" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+﻿<%@ page language="java" import="java.util.*" import="java.sql.*" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <% request.setCharacterEncoding("utf-8"); %>
+<%@ include file = "/includes/dbinfo.jsp" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
- <HEAD>
-  <TITLE>답변형 게시판 상세보기</TITLE>
- </HEAD>
+<HEAD>
+	<TITLE>상품 리뷰 조회</TITLE>
+	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
+</HEAD>
+<%
+	String now_id = (String)session.getAttribute("G_ID");
+	String qna_id = request.getParameter("qna_id");
+
+	ResultSet rs = null, rs2 = null, rs3 = null;
+	Statement stmt = con.createStatement();
+	Statement stmt2 = con.createStatement();
+	Statement stmt3 = con.createStatement();
+
+	String check_sql = "SELECT * FROM qna q LEFT JOIN product p ON (q.product_id = p.product_id) where qna_id ='" + qna_id + "'";
+	rs = stmt.executeQuery(check_sql);
+	rs.next();
+
+	String qna_group = rs.getString("qna_group");
+	String seller_id = rs.getString("seller_id");
+	String lock_yn = rs.getString("lock_yn");
+
+	String check = "SELECT * FROM qna q where qna_group ='" + qna_group + "'";
+	rs3 = stmt3.executeQuery(check);
+	rs3.next();
+	String writer = rs3.getString("writer");
+
+
+	String writer_check = "SELECT * FROM qna q where qna_group ='" + qna_group + "' and qna_id='" + qna_id + "'";
+	rs2 = stmt2.executeQuery(writer_check);
+	rs2.next();
+	String writer1 = rs2.getString("writer");
+
+	if(lock_yn.equals("1")){
+		if(now_id == null)
+		{
+			out.print("<script type=text/javascript>");
+			out.print("alert('비밀글입니다.');");
+			out.print("location.href = '/index.jsp';");
+			out.print("</script>");
+		}
+		else if(!now_id.equals(writer) && !now_id.equals(seller_id)){
+			out.print("<script type=text/javascript>");
+			out.print("alert('비밀글입니다.');");
+			out.print("location.href = '/index.jsp';");
+			out.print("</script>");
+		}
+	}
+%>
 
 <script language=javascript>
-function submit_modify()
-{
-	document.frm1.action = "boardCmodify.jsp";
-	document.frm1.submit();
-}
+	function KeyNumber()
+	{
+		var event_key = event.keyCode;
 
-function submit_reply()
-{
-	document.frm1.action = "boardCreply.jsp";
-	document.frm1.submit();
-}
+		if((event_key < 48 || event_key > 57) && (event_key != 8 && event_key != 46))
+		{
+			event.returnValue=false;
+		}
+	}
 
-function submit_delete()
-{
-	document.frm1.action = "boardCdelConfirm.jsp";
-	document.frm1.submit();
-}
+	function goList() {
+		document.qna_read_form.action = "./qna_list.jsp?product_id=" + document.qna_read_form.product_id.value;
+		document.qna_read_form.submit();
+	}
 
-function submit_list()
-{
-	document.frm1.action = "boardClist.jsp";
-	document.frm1.submit();
-}
+	function goModify() {
+		document.qna_read_form.action = "./qna_modify.jsp?qna_id=" + document.qna_read_form.qna_id.value;
+		document.qna_read_form.submit();
+	}
+
+	function goReply() {
+		document.qna_read_form.action = "./qna_reply.jsp?qna_id=" + document.qna_read_form.qna_id.value;
+		document.qna_read_form.submit();
+	}
 </script>
 
-<%@ include file = "/chap10/include/dbinfo.inc" %>
 <%
-	int num = Integer.parseInt(request.getParameter("pnum"));
 
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-
-try
-{
-
-	String strSQL = "SELECT num, lock_yn, pwd, title, contents, writer, CONVERT(CHAR(10), updatedtm, 120) writedt, readcnt FROM boardC WHERE num = ?";
-	pstmt	= con.prepareStatement(strSQL);
-	pstmt.setInt(1, num);
-	rs		= pstmt.executeQuery();
-
-	if (rs.next() == false){
-		out.print("등록된 게시글이 없습니다.");
-	}
-	else
+	try
 	{
-		String in_pwd	= request.getParameter("pwd");
-		String db_pwd	= rs.getString("pwd");
-		String lock_yn	= rs.getString("lock_yn");
+		String strSQL = "SELECT * FROM qna where qna_id ='" + qna_id + "'";
+		rs = stmt.executeQuery(strSQL);
 
-		if (lock_yn.equals("Y")) {
-
-			if (in_pwd == null ) 
-				response.sendRedirect("boardCpass_input.jsp?pnum=" + num);
-			else
-				if (in_pwd.equals(db_pwd) == false)
-					response.sendRedirect("boardCpass_input.jsp?pnum=" + num);
-
-		} //if (lock_yn.equals("Y")) end
-
-		String writer	= rs.getString("writer");
-		String title	= rs.getString("title");
-		String contents = rs.getString("contents");
-		String writedt  = rs.getString("writedt");
-		int readcnt		= rs.getInt("readcnt");
-
-		strSQL = "UPDATE boardC SET readcnt = readcnt + 1 WHERE num = ?"; // 조회수를 증가
-		pstmt = con.prepareStatement(strSQL);
-		pstmt.setInt(1, num);
-		pstmt.executeUpdate();
+		if (rs.next()){
+			String product_id = rs.getString("product_id");
+			String qna_title = rs.getString("qna_title");
+			String qna_contents = rs.getString("qna_contents");
 
 %>
-		<h3>답변형 게시판 상세보기</h3>
-		<BODY>
-		<TABLE WIDTH = "500" BORDER = "1" CellPadding = "0" CellSpacing = "0">
-			<TR>
-				<TD WIDTH = "40%" ALIGN = "left">작성자명</TD>
-				<TD WIDTH = "60%" ALIGN = "left"><%= writer %></TD>
-			</TR>
-			<TR>
-				<TD WIDTH = "40%" ALIGN = "left">제목</TD>
-				<TD WIDTH = "60%" ALIGN = "left"><%= title %></TD>
-			</TR>
-			<TR>
-				<TD WIDTH = "40%" ALIGN = "left">내용</TD>
-				<TD WIDTH = "60%" ALIGN = "left">
-					<TEXTAREA NAME="contents" ROWS=5 COLS=50 readonly><%= contents %></TEXTAREA>
-				</TD>
-			</TR>
-			<TR>
-				<TD WIDTH = "100%" ALIGN = "center" COLSPAN = "2">
-				<FORM NAME = "frm1" METHOD = "post">
-				<INPUT TYPE = "hidden" NAME = "pnum"  VALUE = <%= num %>>
-				<TABLE>
-					<TR>
-						<TD  ALIGN = "center">
-							<INPUT TYPE = "button" VALUE = "수정하기" onclick = "submit_modify()">
-						</TD>
-						<TD   ALIGN = "center">
-							<INPUT TYPE = "button" VALUE = "답변달기" onclick = 'submit_reply();'>
-						</TD>
-						<TD  ALIGN = "center">
-							<INPUT TYPE = "button" VALUE = "삭제하기" onclick = "submit_delete()">
-						</TD>
-						<TD  ALIGN = "center">
-							<INPUT TYPE = "button" VALUE = "목록으로" onclick = "submit_list()">
-						</TD>
-					</TR>
-				</TABLE>
-				</FORM>
-				</TD>
-			</TR>
-		</TABLE>
-		</BODY>
+<BODY>
+<FORM NAME = "qna_read_form" METHOD = "post" enctype = "multipart/form-data">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td align="center" valign="top">
+				<table width="815" border="0" cellspacing="0" cellpadding="0">
+					<%@ include file="/includes/top.jsp" %>
+					<tr>
+						<td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td width="547" height="45" align="left" class="new_tit">Q&A 조회</td>
+							</tr>
+							<tr>
+								<td align="center">
+									<table width="100%" border="0" cellspacing="1" cellpadding="7" bgcolor="#D7D7D7">
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">상품코드</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "product_id" VALUE=<%= product_id %> readonly></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">Q&A 코드</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "10" MAXLENGTH = "6" NAME = "qna_id" VALUE=<%= qna_id %> readonly></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">작성자</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><%= writer %></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">제목</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><%= qna_title %></td>
+										</tr>
+										<tr>
+											<td width="24%" align="left" bgcolor="#EEEEEE">내용</td>
+											<td width="330" align="left" bgcolor="#FFFFFF"><%= qna_contents %></td>
+										</tr>
+										<tr>
+											<td colspan=2 align=center  bgcolor="#FFFFFF">
+												<%
+													if(now_id.equals(writer1))
+													{
+												%>
+												<INPUT TYPE = "button" VALUE = "수정" onclick="goModify()">
+												<%
+													}
+												%>
+												<%
+													if(now_id.equals(seller_id))
+													{
+												%>
+												<INPUT TYPE = "button" VALUE = "답글달기" onclick="goReply()">
+												<%
+													}
+												%>
+												<INPUT TYPE = "button" VALUE = "목록 돌아가기" onclick="goList()"></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							</td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</FORM>
+</BODY>
 <%
+		}
+		else
+		{
+			out.print("등록된 리뷰가 없습니다.");
+		}
 
-	} // if (rs.next() == false) else end
+	} //try end
 
-} //try end
-catch(SQLException e1){
-	out.println(e1.getMessage());
-} // catch SQLException end
+	catch(SQLException e1){
+		out.println(e1.getMessage());
+	} // catch SQLException end
 
-catch(Exception e2){
-	e2.printStackTrace();
-} // catch Exception end
+	catch(Exception e2){
+		e2.printStackTrace();
+	} // catch Exception end
 
-finally{
-	if (pstmt != null) pstmt.close();
-	if (rs    != null) rs.close();
-	if (con   != null) con.close();
-} // finally end
+	finally{
+		if (stmt  != null) stmt.close();
+		if (stmt2  != null) stmt2.close();
+		if (stmt3  != null) stmt3.close();
+		if (rs    != null) rs.close();
+		if (rs2   != null) rs2.close();
+		if (rs3   != null) rs3.close();
+		if (con   != null) con.close();
+	} // finally end
 %>
 </HTML>

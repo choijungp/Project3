@@ -43,6 +43,11 @@
         document.detail_form.submit();
     }
 
+    function goQnA() {
+        document.detail_form.action = "./qna_list.jsp?product_id="+document.detail_form.product_id.value;
+        document.detail_form.submit();
+    }
+
 </script>
 
 <body>
@@ -171,7 +176,8 @@
                                     <tr>
                                         <td align="center">
                                             <input type = "button" id = "button" value = "리뷰 보기" onClick = "goView();"/>
-                                            <input type = "button" id = "button2"  value = "장바구니 담기" onClick = "cartAdd();"/>
+                                            <input type = "button" id = "button2" value = "Q&A 보기" onClick = "goQnA();"/>
+                                            <input type = "button" id = "button3"  value = "장바구니 담기" onClick = "cartAdd();"/>
                                         </td>
                                     </tr>
                                 </table></td>

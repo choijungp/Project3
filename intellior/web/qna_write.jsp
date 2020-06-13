@@ -8,7 +8,20 @@
 	<script type="text/javascript">
 		window.valid_check = function ()
 		{
-			document.q_insert_frm.submit();
+			if (document.q_write.qna_title.value == "")
+			{
+				alert("제목을 입력바랍니다.");
+				document.q_write.qna_title.focus();
+				return false;
+			}
+
+			if (document.q_write.qna_contents.value == "")
+			{
+				alert("내용을 입력바랍니다.");
+				document.q_write.qna_contents.focus();
+				return false;
+			}
+			document.q_write.submit();
 		}
 
 		function KeyNumber()
@@ -21,6 +34,12 @@
 			}
 		}
 
+		function goList()
+		{
+			document.q_write.action = "qna_list.jsp?product_id="+document.q_write.product_id.value
+			document.q_write.submit();
+		}
+
 	</script>
 	<TITLE> 질문 등록 </TITLE>
 	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
@@ -31,7 +50,7 @@
 	{
 		out.print("<script type=text/javascript>");
 		out.print("alert('로그인을 하시기 바랍니다.!!!');");
-		out.print("location.href = '/seller/seller_index.jsp';");
+		out.print("location.href = '/index.jsp';");
 		out.print("</script>");
 	}
 %>
@@ -46,7 +65,6 @@
 						<img src="/icons/sub_bg.png" width="810"/>
 					</td>
 				</tr>
-
 				<%
 					String product_id = request.getParameter("product_id");
 				%>
@@ -56,7 +74,7 @@
 							<td width="547" height="45" align="left" class="new_tit">질문 등록</td>
 						</tr>
 						<tr>
-							<FORM NAME ="q_insert_frm" ACTION = "./qna_write_ok.jsp" METHOD = "post" enctype="multipart/form-data" >
+							<FORM NAME ="q_write" ACTION = "/qna_write_ok.jsp" METHOD = "post" enctype="multipart/form-data" >
 								<td align="center">
 									<table width="100%" border="0" cellspacing="1" cellpadding="7" bgcolor="#D7D7D7">
 										<tr>
@@ -70,17 +88,30 @@
 										<TR>
 											<TD WIDTH = "40%" ALIGN = "left" bgcolor="#EEEEEE">비밀글</TD>
 											<TD WIDTH = "60%" ALIGN = "left" bgcolor="#FFFFFF">
-												비밀글 여부<INPUT TYPE ="checkbox" NAME="lock_yn" VALUE = "1"><BR><BR>
-												비밀번호 <INPUT TYPE ="text" NAME="pwd" SIZE = "10" MAXLENGTH = "10">
+												비밀글 여부<INPUT TYPE ="checkbox" NAME="lock_yn" VALUE = "1">
 											</TD>
 										</TR>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">내용</td>
 											<td width="330" align="left" bgcolor="#FFFFFF"> <textarea rows="13" cols="40" NAME = "qna_contents"> </textarea> </td>
 										</tr>
-										<tr>
-											<td colspan=2 align=center  bgcolor="#FFFFFF"><INPUT TYPE = "button" VALUE = "등록" onclick="valid_check()" onmouseover="this.style.cursor='hand';"> </td>
-										</tr>
+										<TR>
+											<TD WIDTH = "100%" ALIGN = "center" COLSPAN = "2" bgcolor="#FFFFFF">
+												<TABLE>
+													<TR>
+														<TD WIDTH = "33%" ALIGN = "center" bgcolor="#FFFFFF">
+															<INPUT TYPE = "reset" VALUE = "다시 작성">
+														</TD>
+														<TD WIDTH = "34%" ALIGN = "center" bgcolor="#FFFFFF">
+															<INPUT TYPE = "button" VALUE = "등록" onClick="valid_check()">
+														</TD>
+														<TD WIDTH = "33%" ALIGN = "center" bgcolor="#FFFFFF">
+															<INPUT TYPE = "button" VALUE = "목록으로" onClick = "goList()">
+														</TD>
+													</TR>
+												</TABLE>
+											</TD>
+										</TR>
 									</table>
 								</td>
 							</FORM >

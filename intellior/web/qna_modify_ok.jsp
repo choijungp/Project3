@@ -1,51 +1,46 @@
-﻿<%@ page language="java" import="java.util.*" import="java.sql.*" contentType="text/html; charset=utf-8"%>
+﻿<%@ page language="java" import="java.util.*,java.io.*" import="java.sql.*" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page import="com.oreilly.servlet.MultipartRequest,com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
+
 <% request.setCharacterEncoding("utf-8"); %>
-<%@ include file = "/chap10/include/dbinfo.inc" %>
+<%@ include file = "/includes/dbinfo.jsp" %>
 <%
+	String realFolder = "";
+	String saveFolder = "/review_images/";
+	String encType = "utf-8";
 
-PreparedStatement pstmt = null;
+	int sizeLimit = 10 * 1024 * 1024;
+	realFolder = application.getRealPath(saveFolder);
+	MultipartRequest multi	= new MultipartRequest(request,realFolder,sizeLimit,encType);
 
-try
-{
-	int num		= Integer.parseInt(request.getParameter("pnum"));
-	String title	= request.getParameter("title");
-	String contents	= request.getParameter("contents");
+	Statement stmt = con.createStatement();
 
-	String SQL	= "UPDATE boardC SET ";
-	SQL		=  SQL + "  title	= ? ";
-	SQL		=  SQL + ", contents	= ? ";
-	SQL		=  SQL + ", updatedtm	= ? ";
-	SQL		=  SQL + " WHERE num	= ? ";
-	pstmt = con.prepareStatement(SQL);
+	String qna_id			= multi.getParameter("qna_id");
+	String product_id			= multi.getParameter("product_id");
+	String qna_title			= multi.getParameter("qna_title");
+	String qna_contents			= multi.getParameter("qna_contents");
 
-	Calendar dateIn = Calendar.getInstance();
-	String indate = Integer.toString(dateIn.get(Calendar.YEAR))		+ "-";
-	indate = indate + Integer.toString(dateIn.get(Calendar.MONTH)+1)	+ "-";
-	indate = indate + Integer.toString(dateIn.get(Calendar.DATE))		+ " ";
-	indate = indate + Integer.toString(dateIn.get(Calendar.HOUR_OF_DAY))	+ ":";
-	indate = indate + Integer.toString(dateIn.get(Calendar.MINUTE))		+ ":";
-	indate = indate + Integer.toString(dateIn.get(Calendar.SECOND));
 
-	pstmt.setString(1, title);
-	pstmt.setString(2, contents);
-	pstmt.setString(3, indate);
-	pstmt.setInt(4, num);
-	pstmt.executeUpdate();
+	try{
+		String SQL		= "UPDATE qna set ";
+		SQL = SQL + "  qna_title		= '" + qna_title		+ "' ";
+		SQL = SQL + ", qna_contents	= '" + qna_contents	+ "' ";
+		SQL = SQL + "  WHERE qna_id	= '" + qna_id		+ "'";
 
-} //try end
-catch(SQLException e1){
-	out.println(e1.getMessage());
-} // catch SQLException end
+		stmt.executeUpdate(SQL);
 
-catch(Exception e2){
-	e2.printStackTrace();
-} // catch Exception end
+	} //try end
 
-finally{
-	if (pstmt != null) pstmt.close();
-	if (con   != null) con.close();
+	catch(SQLException e1){
+		e1.printStackTrace();
+	} // catch SQLException end
 
-	response.sendRedirect("boardClist.jsp");
+	catch(Exception e2){
+		e2.printStackTrace();
+	} // catch Exception end
 
-} // finally end	
+	finally{
+		if (stmt  != null) stmt.close();
+		if (con   != null) con.close();
+		response.sendRedirect("./qna_list.jsp?product_id=" + product_id);
+	}
 %>
