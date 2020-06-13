@@ -57,13 +57,35 @@
         <tr>
             <td align="center" valign="top">
                 <table width="815" border="0" cellspacing="0" cellpadding="0">
+                    <%
+                        String id_ch = (String)session.getAttribute("G_ID");
+                        ResultSet rs_ch = null;
+                        Statement stmt_ch=con.createStatement();
+                        String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
+                        rs_ch=stmt_ch.executeQuery(strSQL_ch);
+                        if(rs_ch.next()){
+                    %>
+                    <%@ include file="/includes/seller_top.jsp" %>
+                    <%
+                        }
+                        else{
+                    %>
                     <%@ include file="/includes/top.jsp" %>
+                    <%
+                        }
+                    %>
                     <tr>
-                        <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+                        <td>
+                            <img src="/icons/sub_bg.png" width="810"/>
+                        </td>
                     </tr>
 
 
                     <%
+                        String sbar=request.getParameter("bar");
+                        if(sbar==null)
+                            sbar="1";
+
                         String userid         =   (String)session.getAttribute("G_ID");
                         String product_id = request.getParameter("product_id");
 
@@ -175,11 +197,23 @@
                                     </tr>
                                     <tr>
                                         <td align="center">
-                                            <input type = "button" id = "button" value = "리뷰 보기" onClick = "goView();"/>
-                                            <input type = "button" id = "button2" value = "Q&A 보기" onClick = "goQnA();"/>
-                                            <input type = "button" id = "button3"  value = "장바구니 담기" onClick = "cartAdd();"/>
+                                            <input type = "button" id = "button2"  value = "장바구니 담기" onClick = "cartAdd();" class="submit_button"/>
                                         </td>
                                     </tr>
+                                </table>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="8">
+                                        <br><br>
+                                        <tr>
+                                            <td align="center" width="233" <%if(sbar.equals("1")){ out.print("class=\"detail_bar_slt\"");} else out.print("class=\"detail_bar_nslt\"");%>>
+                                                <a href="/goodsdetail.jsp?product_id=<%=product_id%>&bar=1">상세보기</a></td>
+                                            <td align="center" width="233" <%if(sbar.equals("2")){ out.print("class=\"detail_bar_slt\"");} else out.print("class=\"detail_bar_nslt\"");%>>
+                                                <a href="/review_list.jsp?product_id=<%=product_id%>">리뷰</a></td>
+                                            <td align="center" width="233" <%if(sbar.equals("3")){ out.print("class=\"detail_bar_slt\"");} else out.print("class=\"detail_bar_nslt\"");%>>
+                                                <a href="/QnA_list.jsp?product_id=<%=product_id%>">Q&A</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" align="center" class="detail_drq"><img src="/images/<%= product_image %>" width="80%" height="100%" /></td>
+                                        </tr>
                                 </table></td>
                             </tr>
                         </table></td>
