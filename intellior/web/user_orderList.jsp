@@ -52,7 +52,7 @@
             <td align="center" valign="top"><table width="800" border="0" cellspacing="5" cellpadding="0">
                 <%
                     totalRecords = rs2.getInt(1);
-                    SQL = "select sum(b.product_price*a.order_count),user_id,product_thumnail,order_code,a.product_id,product_name,a.seller_id,order_state,order_date,order_payment ,count(a.product_id) ";
+                    SQL = "select user_id,product_thumnail,order_code,a.product_id,product_name,a.seller_id,order_state,order_date,order_payment ,count(a.product_id) ";
                     SQL = SQL +" from intelior.order a inner join product b on a.product_id = b.product_id ";
                     SQL = SQL +" where user_id = '" + userid + "' group by order_code";
 
@@ -71,7 +71,7 @@
                         String seller_id			= rs.getString("seller_id"); //seller_name으로 수정
                         int order_state		= rs.getInt("order_state");
                         String order_code		= rs.getString("order_code");
-                        int order_payment		= rs.getInt("sum(b.product_price*a.order_count)");
+                        int order_payment		= rs.getInt("order_payment");
                         String product_name		= rs.getString("product_name");
                         String order_date		= rs.getString("order_date");
 
@@ -120,7 +120,7 @@
                     <TD height="45" align=center>
                         <% if(order_state>0){
                         %>
-                        출고완료 - 배송중
+                        배송완료
                         <% }
                         else{
                         %>

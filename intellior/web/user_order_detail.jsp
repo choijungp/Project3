@@ -15,6 +15,7 @@
 
     int amt						= 0;
     int totAmt				= 0;
+    int order_payment =0;
     Statement stmt		= con.createStatement();
     ResultSet rs			= null;
 %>
@@ -66,6 +67,7 @@
                         int product_price = rs.getInt("product_price");
                         int order_count = rs.getInt("order_count");
                         int order_state = rs.getInt("order_state");
+                        order_payment = rs.getInt("order_payment");
                         int result_price = product_price*order_count;
                         totAmt			= totAmt + result_price;
 
@@ -103,7 +105,7 @@
             </tr>
 
             <tr>
-                <td height="50" align="right">합계 <SPAN id = "totAmtView"><%= df2.format(totAmt) %></SPAN>원</td>
+                <td height="50" align="right">결제금액 <SPAN id = "totAmtView"><%= df2.format(order_payment) %></SPAN>원</td>
             </tr>
             </tr>
             <tr>
