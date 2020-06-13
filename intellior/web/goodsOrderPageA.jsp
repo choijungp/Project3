@@ -75,11 +75,11 @@
                   DecimalFormat df	= new DecimalFormat("###,###,##0");
                   int amt						= 0;
                   int totAmt				= 0;
-
+                  String user_rank ="";
                   Statement stmt  = con.createStatement();
 
-                  String SQL = "select a.*, b.* from cart a ";
-                  SQL = SQL + " inner join product b on a.product_id = b.product_id ";
+                  String SQL = "select a.*, b.*, user_rank from cart a ";
+                  SQL = SQL + " inner join product b on a.product_id = b.product_id inner join intelior.user u on a.user_id = u.user_id ";
                   SQL = SQL + " where a.user_id = '" + userid + "' and chkYN = 'Y'";
                   rs = stmt.executeQuery(SQL);
 
@@ -87,6 +87,7 @@
                   int i		= 0;
                   while(rs.next()){
                     i ++;
+                    user_rank =rs.getString("user_rank");
                     String product_id		= rs.getString("product_id");
                     String product_name		= rs.getString("product_name");
 
@@ -96,7 +97,6 @@
                     String product_thumnail	= rs.getString("product_thumnail");
                     String chkYN			= rs.getString("chkYN");
                     amt								= product_price * qty;
-
                     totAmt						= totAmt + amt;
 
                 %>
@@ -113,15 +113,59 @@
 
                 <%
                   }
+
+//고객 등급 따라서 결제금액 재설정
+                  double discounted_price = 0.0;
+                  if(user_rank.equals("silver")){
+                    discounted_price = totAmt * 0.97; // 3% 할인
+                  }
+                  else if(user_rank.equals("gold")){
+                    discounted_price = totAmt * 0.95;
+                  }
+                  else if(user_rank.equals("basic")){
+                    discounted_price = totAmt;
+                  }
+                  int discounted_price_int = (int)discounted_price;
+
                 %>
               </table></td>
             </tr>
           </table></td>
         </tr>
+        <% if(user_rank.equals("basic")){
+        %>
         <tr>
-          <td height="50" align="center">합계 <SPAN id = "totAmtView"><%= df.format(totAmt) %></SPAN>원</td>
+          <td height="50" align="center">합계 <%= df.format(totAmt) %>원</td>
         </tr>
+        <tr>
+          <td height="50" align="center">회원 등급: <%= user_rank %>  <br> 최종금액 <%= df.format(discounted_price_int) %>원</td>
+        </tr>
+        <% }
+        else if(user_rank.equals("silver")){
+        %>
+        <tr>
+          <td height="50" align="center">합계 <%= df.format(totAmt) %>원</td>
+        </tr>
+        <tr>
+          <td height="50" align="center">회원 등급: <%= user_rank %> 3% 할인 <br> 최종금액 <%= df.format(discounted_price_int) %>원</td>
+        </tr>
+        <% }
+        else if(user_rank.equals("gold")){
+        %>
+        <tr>
+          <td height="50" align="center">합계<%= df.format(totAmt) %>원</td>
+        </tr>
+        <tr>
+          <td height="50" align="center">회원 등급: <%= user_rank %>,  5% 할인 <br> 최종금액 <%= df.format(discounted_price_int) %>원</td>
+        </tr>
+        <% }
+        %>
+
         <%
+
+
+
+
 
           if (rs    != null) rs.close();
           SQL = "select user_name, user_address ,user_phone, user_email from user where user_id = '" + userid + "'";
