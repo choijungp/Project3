@@ -90,6 +90,7 @@
 		if (rs.next()){
 			String product_id = rs.getString("product_id");
 			String qna_title = rs.getString("qna_title");
+			int qna_seq = rs.getInt("qna_seq");
 			String qna_contents = rs.getString("qna_contents");
 
 %>
@@ -142,7 +143,7 @@
 													}
 												%>
 												<%
-													if(now_id.equals(seller_id))
+													if(now_id.equals(seller_id) && qna_seq == 0)
 													{
 												%>
 												<INPUT TYPE = "button" VALUE = "답글달기" onclick="goReply()">
