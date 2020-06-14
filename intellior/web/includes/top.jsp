@@ -29,7 +29,7 @@
                         top_user_rank = rs_top.getString("user_rank");
                     }
                 %>
-                <a href="#"> <%= top_user_rank %> 등급</a> | <%= nm %> 님 환영합니다. | <a href="logout.jsp">로그아웃</a> | <a href="goodsCart.jsp">장바구니</a> | <a href="#">주문배송조회</a> | <a href="mypage_user.jsp">마이페이지</a></td>
+                <a href="#"> <%= top_user_rank %> 등급</a> | <%= nm %> 님 환영합니다. | <a href="logout.jsp">로그아웃</a> | <a href="goodsCart.jsp">장바구니</a> | <a href="/user_orderList.jsp">주문배송조회</a> | <a href="mypage_user.jsp">마이페이지</a></td>
                 <%
                     }
                 %>

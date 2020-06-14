@@ -87,42 +87,12 @@
 								<tr>
 
 									<td align="center" bgcolor="#FFFFFF"><a href="./review_read.jsp?review_id=<%= review_id %>"><%= review_title %></a></td>
-									<%
-										if(review_grade.equals("1"))
-										{ %>
-											<td align="center" bgcolor="#FFFFFF">★☆☆☆☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("2"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★☆☆☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("3"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★☆☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("4"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★★☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("5"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★★★</td>
-									<%
-										}
-									%>
-
+									<td bgcolor="#FFFFFF">
+										<div style="CLEAR: both; BACKGROUND: url(/icons/icon_star2.gif) 0px 0px; FLOAT: left; MARGIN: 0px; WIDTH: 90px; padding: 0px;HEIGHT: 18px;">
+											<p style="WIDTH: <%=review_grade%>0%; BACKGROUND: url(/icons/icon_star.gif) 0px 0px; MARGIN: 0px; padding: 0px;HEIGHT: 18px;">
+											</p>
+										</div>
+									</td>
 									<td align="center" bgcolor="#FFFFFF"><%= user_id		%></td>
 								</tr>
 								<%

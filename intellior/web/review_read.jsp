@@ -40,7 +40,7 @@
 	try
 	{
 		String review_id = request.getParameter("review_id");
-		String s_id = (String)session.getAttribute("G_ID");
+		String s_id2 = (String)session.getAttribute("G_ID");
 
 		String strSQL = "SELECT * FROM review where review_id ='" + review_id + "'";
 		rs = stmt.executeQuery(strSQL);
@@ -115,7 +115,7 @@
 										<tr>
 											<td colspan=2 align=center  bgcolor="#FFFFFF">
 											<%
-												if(s_id == user_id)
+												if(s_id2.equals(user_id))
 												{
 											%>
 													<INPUT TYPE = "button" VALUE = "수정" onclick="goModify()">
