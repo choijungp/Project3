@@ -1,7 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=utf-8" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <link href="/includes/all.css" rel="stylesheet" type="text/css"/>
-
+<%@include file="/includes/dbinfo.jsp"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>

@@ -209,7 +209,7 @@
                                             <td align="center" width="233" <%if(sbar.equals("2")){ out.print("class=\"detail_bar_slt\"");} else out.print("class=\"detail_bar_nslt\"");%>>
                                                 <a href="/review_list.jsp?product_id=<%=product_id%>">리뷰</a></td>
                                             <td align="center" width="233" <%if(sbar.equals("3")){ out.print("class=\"detail_bar_slt\"");} else out.print("class=\"detail_bar_nslt\"");%>>
-                                                <a href="/QnA_list.jsp?product_id=<%=product_id%>">Q&A</a></td>
+                                                <a href="/qna_list.jsp?product_id=<%=product_id%>">Q&A</a></td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" align="center" class="detail_drq"><img src="/images/<%= product_image %>" width="80%" height="100%" /></td>
