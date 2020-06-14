@@ -43,11 +43,11 @@
                                         total_payment+=payment;
                                     }
                                     int check = 0;
-                                    if (total_payment <= 50000){
-                                        check =50001;
+                                    if (total_payment <= 500000){
+                                        check =500001;
                                     }
-                                    else if(total_payment <= 100000){
-                                        check =100001;
+                                    else if(total_payment <= 1000000){
+                                        check =1000001;
                                     }
 
 

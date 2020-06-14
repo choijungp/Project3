@@ -12,10 +12,10 @@ a:active {text-decoration: none;}
 	padding-top: 26px;
 }
 
-a.navi {font-family: "휴먼둥근헤드라인";font-size: 20px;color: #2e8dd4; font-weight:normal;} /*font, color 수정*/
+a.navi {font-family: "휴먼둥근헤드라인";font-size: 23px;color: #4d4d4d; font-weight:normal;} /*font, color 수정*/
 a:link.navi {text-decoration: none;}
 a:visited.navi {text-decoration: none;}
-a:hover.navi {text-decoration: none;color: #28c9eb;}
+a:hover.navi {text-decoration: none;color: #2e8dd4;}
 a:active.navi {text-decoration: none;}
 .notice_padd {
 	padding-top: 26px;
@@ -69,21 +69,31 @@ a:active.navi {text-decoration: none;}
 
 div.search_div{
 	height: 18px;
-	width: 200px;
+	width: 267px;
 	border: 0px;
 	background: #ffffff;
 }
 
-input.search_input{
-	font-size: 16px;
-	width: 163px;
+select.search_select{
+	font-size: 14px;
+	width: 70px;
 	height: 35px;
-	padding: 10px;
-	border: 1px solid #7f7f7f;
+	padding: 5px;
+	border: 1px solid #41719c;
 	outline: none;
 	float: left;
 	border-top-left-radius: 8px;
 	border-bottom-left-radius: 8px;
+}
+
+input.search_input{
+	font-size: 14px;
+	width: 160px;
+	height: 35px;
+	padding: 5px;
+	border: 1px solid #7f7f7f;
+	outline: none;
+	float: left;
 }
 
 button.search_button{
@@ -133,4 +143,20 @@ select.box_select{
 select.sort_select{
 	font-family: "Times New Roman";
 	border-radius: 3px;
+}
+
+td.detail_bar_slt{
+	border-left: 2px solid #2d89ce;
+	border-top: 2px solid #2d89ce;
+	border-right: 2px solid #2d89ce;
+}
+
+td.detail_bar_nslt{
+	border-bottom: 2px solid #2d89ce;
+}
+
+td.detail_drq{
+	border-left: 2px solid #2d89ce;
+	border-bottom: 2px solid #2d89ce;
+	border-right: 2px solid #2d89ce;
 }
