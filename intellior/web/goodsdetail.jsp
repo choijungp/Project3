@@ -52,7 +52,7 @@
 
 <body>
 
-<FORM NAME = detail_form ACTION = "goodsCartAdd.jsp" METHOD = POST>
+<FORM NAME = "detail_form" ACTION = "goodsCartAdd.jsp" METHOD = POST>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td align="center" valign="top">
@@ -197,7 +197,7 @@
                                     </tr>
                                     <tr>
                                         <td align="center">
-                                            <input type = "button" id = "button2"  value = "장바구니 담기" onClick = "cartAdd();" class="submit_button"/>
+                                            <input type = "button" id = "button2"  value = "장바구니 담기" onClick = "cartAdd();" onmouseover="this.style.cursor='hand';" class="submit_button"/>
                                         </td>
                                     </tr>
                                 </table>
