@@ -44,7 +44,7 @@
                 <a href="/goodsdisplay.jsp?category=소품" class="navi">소품</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="/goodsdisplay.jsp?category=반려동물" class="navi">반려동물</a>
             </td>
-            <td align="right" width="267">
+            <td align="right" width="220">
                 <FORM NAME="frm1" ACTION="/goodsSearch.jsp" METHOD="post">
                     <div class="search_div">
                         <select name="search_key" class="search_select">

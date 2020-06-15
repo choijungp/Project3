@@ -12,10 +12,42 @@
 <script language=javascript>
 	function valid_check()
 	{
-		if (document.review_update_form.review_grade.value == "")
+		var grad = 0;
+		if (document.review_update_form.review_grade.value == "1") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "2") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "3") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "4") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "5") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "6") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "7") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "8") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "9") {
+			grad = 1;
+		}
+		else if (document.review_update_form.review_grade.value == "10") {
+			grad = 1;
+		}
+
+		else if (grad != 1)
 		{
-			alert("평점을 입력하여 주시기 바랍니다.");
-			document.review_update_form.category.focus();
+			alert("평점은 1 ~ 10의 수로 입력해주시기 바랍니다.");
+			document.review_update_form.review_grade.focus();
 			return false;
 		}
 
@@ -91,16 +123,7 @@
 										</tr>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">평점</td>
-											<td width="76%" align="left" bgcolor="#FFFFFF">
-												<SELECT NAME="review_grade">
-													<OPTION VALUE="">==평점을 선택하세요==</OPTION>
-													<OPTION VALUE="1">★☆☆☆☆</OPTION>
-													<OPTION VALUE="2">★★☆☆☆</OPTION>
-													<OPTION VALUE="3">★★★☆☆</OPTION>
-													<OPTION VALUE="4">★★★★☆</OPTION>
-													<OPTION VALUE="5">★★★★★</OPTION>
-												</SELECT>
-											</td>
+											<td width="76%" align="left" bgcolor="#FFFFFF"><INPUT TYPE = "text" SIZE = "30" MAXLENGTH = "50" NAME = "review_grade"></td>
 										</tr>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">변경전 이미지</td>

@@ -36,7 +36,7 @@
                                             <td height="50" align="center" colspan="7" class="new_tit"><a href="seller_orderList.jsp">주문 내역</a></td>
                                         </tr>
                                         <tr>
-                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="#">판매량 통계 </a></td>
+                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="/seller/sales_statistics.jsp">판매량 통계 </a></td>
                                         </tr>
                                     </table>
                                 </td>

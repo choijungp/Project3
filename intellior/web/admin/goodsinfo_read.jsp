@@ -22,7 +22,7 @@ function KeyNumber()
 }
 
 function delete_check() {
-	document.read_form.action = "goodsinfo_delete.jsp?product_id=" + document.read_form.product_id.value;
+	document.read_form.action = "/admin/goodsinfo_delete.jsp?product_id=" + document.read_form.product_id.value;
 	document.read_form.submit();
 }
 </script>

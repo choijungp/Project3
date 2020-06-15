@@ -88,7 +88,7 @@
 							String SQL = null;
 
 							if(in_sort.equals("1")||in_sort.equals("")){
-								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product";
+								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product order by product_id desc";
 							}
 							else if(in_sort.equals("2")){
 								SQL= "SELECT product_id, product_name, category, product_price, seller_id FROM product ORDER BY product_view_count DESC";
