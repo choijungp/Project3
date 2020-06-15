@@ -104,10 +104,15 @@
 											<td width="24%" align="left" bgcolor="#EEEEEE">작성자</td>
 											<td width="76%" align="left" bgcolor="#FFFFFF"><%= user_id %></td>
 										</tr>
+										<% if(review_image != null)
+										{%>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">이미지</td>
 											<td width="76%" align="left" bgcolor="#FFFFFF"><IMG SRC="/review_images/<%= review_image%>" height=200 width=200></td>
 										</tr>
+										<%
+											}
+										%>
 										<tr>
 											<td width="24%" align="left" bgcolor="#EEEEEE">내용</td>
 											<td width="330" align="left" bgcolor="#FFFFFF"><%= review_contents %></td>

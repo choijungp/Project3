@@ -19,7 +19,7 @@
                 else
                 {
                 %>
-                <a href="seller_info_update.jsp">회원정보변경</a> | <%= nm %> 님 환영합니다. | <a href="/seller/goodsinfo_insert.jsp">상품등록</a> | <a href="mypage_seller.jsp">마이페이지</a> | <a href="../logout.jsp">로그아웃</a>
+                <a href="seller_info_update.jsp">회원정보변경</a> | <%= nm %> 님 환영합니다. | <a href="/seller/goodsinfo_insert.jsp">상품등록</a> | <a href="/seller/mypage_seller.jsp">마이페이지</a> | <a href="../logout.jsp">로그아웃</a>
                 <%
                     }
                 %>

@@ -25,7 +25,7 @@
                     ResultSet rs = null;
                     Statement stmt  = con.createStatement();
 
-                    String SQL = "select * from product";
+                    String SQL = "select * from product order by product_id desc";
                     rs = stmt.executeQuery(SQL);
                 %>
                 <tr>

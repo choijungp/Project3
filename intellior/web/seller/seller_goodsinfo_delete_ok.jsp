@@ -12,12 +12,13 @@
 	MultipartRequest multi	= new MultipartRequest(request,realFolder,sizeLimit,encType);
 
 	ResultSet  rs = null;
-	Statement stmt = con.createStatement();
+	Statement stmt = null, stmt2 = null;
+	stmt = con.createStatement();
+	stmt2 = con.createStatement();
 
 	String product_id		= multi.getParameter("product_id");
 
 	try{
-
 		String strSQL = "SELECT * FROM product where product_id ='" + product_id + "'";
 		rs = stmt.executeQuery(strSQL);
 
@@ -38,8 +39,8 @@
 			if (f2.exists()) new File(filePath2).delete();
 		}
 
-		strSQL = "DELETE FROM product where product_id ='" + product_id + "'";
-		stmt.executeUpdate(strSQL);
+		String SQL = "DELETE FROM product where product_id ='" + product_id + "'";
+		stmt2.executeUpdate(SQL);
 
 	} //try end
 

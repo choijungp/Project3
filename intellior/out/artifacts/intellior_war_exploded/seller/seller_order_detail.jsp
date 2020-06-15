@@ -17,15 +17,15 @@
 
 
 <%
-    String sellerid			=	(String)session.getAttribute("G_ID");
-    DecimalFormat df1	= new DecimalFormat("00");
-    DecimalFormat df2	= new DecimalFormat("###,###,##0");
+    String sellerid         =   (String)session.getAttribute("G_ID");
+    DecimalFormat df1   = new DecimalFormat("00");
+    DecimalFormat df2   = new DecimalFormat("###,###,##0");
     String order_code = request.getParameter("order_code");
 
-    int amt						= 0;
-    int totAmt				= 0;
-    Statement stmt		= con.createStatement();
-    ResultSet rs			= null;
+    int amt                  = 0;
+    int totAmt            = 0;
+    Statement stmt      = con.createStatement();
+    ResultSet rs         = null;
 %>
 <BODY>
 <FORM NAME="update_seller_order" ACTION="seller_order_detail_ok.jsp" METHOD="post">
@@ -60,8 +60,8 @@
 
                     <%
                         String strSQL = "select a.*, b.*, c.*   from intelior.order a ";
-                        strSQL = strSQL + " inner join product	b on a.product_id	= b.product_id ";
-                        strSQL = strSQL + " inner join intelior.user c on a.user_id	= c.user_id ";
+                        strSQL = strSQL + " inner join product   b on a.product_id   = b.product_id ";
+                        strSQL = strSQL + " inner join intelior.user c on a.user_id   = c.user_id ";
                         strSQL = strSQL + " where a.seller_id = '" + sellerid + "' and a.order_code = " + order_code ;
 
 
@@ -81,7 +81,7 @@
                             int order_count = rs.getInt("order_count");
                             int order_state = rs.getInt("order_state");
                             int result_price = product_price*order_count;
-                            totAmt			= totAmt + result_price;
+                            totAmt         = totAmt + result_price;
 
                     %>
                     <tr>
@@ -89,17 +89,17 @@
                         <INPUT type = hidden name = "order_code" value = "<%= order_code %>">
                         <INPUT type = hidden name = "order_state" value = "<%= order_state %>">
                         <td align="center" bgcolor="#FFFFFF"><img src="/images/<%= product_thumnail %>" width="40" height="40" /></td>
-                        <td align="center" bgcolor="#FFFFFF"><%= product_name					%></td>
+                        <td align="center" bgcolor="#FFFFFF"><%= product_name               %></td>
                         <td align="center" bgcolor="#FFFFFF"><%= df2.format(product_price)%></td>
-                        <td align="center" bgcolor="#FFFFFF"><%= order_count			%></td>
-                        <td align="center" bgcolor="#FFFFFF"><%= df2.format(result_price)	%></td>
-                        <td align="center" bgcolor="#FFFFFF"><%= user_nm					%></td>
-                        <td align="center" bgcolor="#FFFFFF"><%= user_address			%></td>
-                        <td align="center" bgcolor="#FFFFFF"><%= user_phone		%></td>
+                        <td align="center" bgcolor="#FFFFFF"><%= order_count         %></td>
+                        <td align="center" bgcolor="#FFFFFF"><%= df2.format(result_price)   %></td>
+                        <td align="center" bgcolor="#FFFFFF"><%= user_nm               %></td>
+                        <td align="center" bgcolor="#FFFFFF"><%= user_address         %></td>
+                        <td align="center" bgcolor="#FFFFFF"><%= user_phone      %></td>
                         <td height="45" align=center>
                             <% if(order_state>0){
                             %>
-                            출고완료
+                            배송완료
                             <% }
                             else{
                             %>
