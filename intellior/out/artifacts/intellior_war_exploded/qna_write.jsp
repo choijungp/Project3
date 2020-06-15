@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=utf-8" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <link href="/includes/all.css" rel="stylesheet" type="text/css"/>
+<%@ include file = "/includes/dbinfo.jsp" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
@@ -36,7 +37,7 @@
 
 		function goList()
 		{
-			document.q_write.action = "qna_list.jsp?product_id="+document.q_write.product_id.value
+			document.q_write.action = "/qna_list.jsp?product_id="+document.q_write.product_id.value
 			document.q_write.submit();
 		}
 

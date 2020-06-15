@@ -14,7 +14,23 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="center" valign="top"><table width="815" border="0" cellspacing="0" cellpadding="0">
+			<%
+				String id_ch = (String)session.getAttribute("G_ID");
+				ResultSet rs_ch = null;
+				Statement stmt_ch=con.createStatement();
+				String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
+				rs_ch=stmt_ch.executeQuery(strSQL_ch);
+				if(rs_ch.next()){
+			%>
+			<%@ include file="/includes/seller_top.jsp" %>
+			<%
+			}
+			else{
+			%>
 			<%@ include file="/includes/top.jsp" %>
+			<%
+				}
+			%>
 		<tr>
 			<td height="80" background="/icons/sub_bg.png">&nbsp;</td>
 		</tr>
@@ -71,42 +87,12 @@
 								<tr>
 
 									<td align="center" bgcolor="#FFFFFF"><a href="./review_read.jsp?review_id=<%= review_id %>"><%= review_title %></a></td>
-									<%
-										if(review_grade.equals("1"))
-										{ %>
-											<td align="center" bgcolor="#FFFFFF">★☆☆☆☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("2"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★☆☆☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("3"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★☆☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("4"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★★☆</td>
-									<%
-										}
-									%>
-									<%
-										if(review_grade.equals("5"))
-										{ %>
-									<td align="center" bgcolor="#FFFFFF">★★★★★</td>
-									<%
-										}
-									%>
-
+									<td bgcolor="#FFFFFF">
+										<div style="CLEAR: both; BACKGROUND: url(/icons/icon_star2.gif) 0px 0px; FLOAT: left; MARGIN: 0px; WIDTH: 90px; padding: 0px;HEIGHT: 18px;">
+											<p style="WIDTH: <%=review_grade%>0%; BACKGROUND: url(/icons/icon_star.gif) 0px 0px; MARGIN: 0px; padding: 0px;HEIGHT: 18px;">
+											</p>
+										</div>
+									</td>
 									<td align="center" bgcolor="#FFFFFF"><%= user_id		%></td>
 								</tr>
 								<%

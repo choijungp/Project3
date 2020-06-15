@@ -7,6 +7,8 @@
 	<TITLE> 주문 완료</TITLE>
 	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </HEAD>
+
+
 <%
 
 	String userid			=	(String)session.getAttribute("G_ID");
@@ -81,6 +83,7 @@
 
 		rs			= stmt.executeQuery(strSQL);
 		String user_rank = "";
+		int rankUpCheck =0;
 		while(rs.next()){
 			String product_id		= rs.getString("product_id");
 			String product_name		= rs.getString("product_name");
@@ -133,11 +136,14 @@
 			payment = rs3.getInt("order_payment");
 			total_payment=total_payment+payment;
 		}
-		if(total_payment > 100000){
+		total_payment=  total_payment + total_price;
+		if(total_payment > 1000000 && !user_rank.equals("gold")){
+			rankUpCheck=1;
 			setRankSQL = "update user set user_rank = 'gold' where user_id = '" + userid + "' ";
 			stmt7.executeUpdate(setRankSQL);
 		}
-		else if(total_payment > 50000){
+		else if(total_payment > 500000&& !(user_rank.equals("silver")||user_rank.equals("gold"))){
+			rankUpCheck=1;
 			setRankSQL = "update user set user_rank = 'silver' where user_id = '" + userid + "' ";
 			stmt7.executeUpdate(setRankSQL);
 		}
@@ -250,6 +256,15 @@
 
 			</table></td>
 		</tr>
+		<%
+			if(rankUpCheck>0){
+		%>
+		<tr>
+			<td height="50" align="center" class ="new_tit"> 축하합니다! 회원 등급이 올랐습니다. 다음 구매부터 할인가로 구매할 수 있습니다.<br></td>
+		</tr>
+		<%
+			}
+		%>
 
 		<tr>
 			<td height="50" align="center">

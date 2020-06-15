@@ -40,7 +40,7 @@
 	try
 	{
 		String review_id = request.getParameter("review_id");
-		String s_id = (String)session.getAttribute("G_ID");
+		String s_id2 = (String)session.getAttribute("G_ID");
 
 		String strSQL = "SELECT * FROM review where review_id ='" + review_id + "'";
 		rs = stmt.executeQuery(strSQL);
@@ -60,7 +60,23 @@
 		<tr>
 			<td align="center" valign="top">
 				<table width="815" border="0" cellspacing="0" cellpadding="0">
-					<%@ include file="/includes/top.jsp" %>
+					<%
+				String id_ch = (String)session.getAttribute("G_ID");
+				ResultSet rs_ch = null;
+				Statement stmt_ch=con.createStatement();
+				String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
+				rs_ch=stmt_ch.executeQuery(strSQL_ch);
+				if(rs_ch.next()){
+			%>
+			<%@ include file="/includes/seller_top.jsp" %>
+			<%
+			}
+			else{
+			%>
+			<%@ include file="/includes/top.jsp" %>
+			<%
+				}
+			%>
 					<tr>
 						<td height="80" background="/icons/sub_bg.png">&nbsp;</td>
 					</tr>
@@ -99,7 +115,7 @@
 										<tr>
 											<td colspan=2 align=center  bgcolor="#FFFFFF">
 											<%
-												if(s_id == user_id)
+												if(s_id2.equals(user_id))
 												{
 											%>
 													<INPUT TYPE = "button" VALUE = "수정" onclick="goModify()">

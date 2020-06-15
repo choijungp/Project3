@@ -5,6 +5,7 @@ pageEncoding="euc-kr"%>
 <link href="/includes/all.css" rel="stylesheet" type="text/css" />
 <%
     String id=request.getParameter("id");
+
     boolean fnd=false;
 
     if(id==null)
@@ -15,8 +16,13 @@ pageEncoding="euc-kr"%>
         Statement stmt=con.createStatement();
         String strSQL="SELECT user_id FROM user WHERE user_id='"+id+"'";
         rs=stmt.executeQuery(strSQL);
+        if(rs.next())
+            fnd=true;
 
-        if(rs.next()) fnd=true;
+        strSQL="SELECT seller_id FROM seller WHERE seller_id='"+id+"'";
+        rs=stmt.executeQuery(strSQL);
+        if(rs.next())
+            fnd=true;
 
         stmt.close();
         con.close();
@@ -29,7 +35,7 @@ pageEncoding="euc-kr"%>
 
 <script language="JavaScript">
     function id_search(){
-        if(document.form1.value==""){
+        if(document.form1.id.value==""){
             alert("아이디를 입력해 주세요");
             document.form1.id.focus();
         }
