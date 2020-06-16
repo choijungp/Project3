@@ -15,7 +15,9 @@
             <%@ include file="/includes/seller_top.jsp" %>
             </tr>
             <tr>
-                <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+                <td>
+                    <img src="/icons/sub_bg.png" width="810"/>
+                </td>
             </tr>
             <tr>
                 <%
