@@ -5,13 +5,9 @@
 <HTML>
 <HEAD>
     <TITLE> 상품 상세보기</TITLE>
-
     <link href="/includes/all.css" rel="stylesheet" type="text/css" />
-
 </HEAD>
-
 <script type="text/javascript">
-
     function qtyChanged(){
         var totalAmt      = (document.detail_form.product_price.value) * (document.detail_form.qty.value);
         var strTotalAmt   = totalAmt.toString();
@@ -47,23 +43,22 @@
         document.detail_form.action = "./qna_list.jsp?product_id="+document.detail_form.product_id.value;
         document.detail_form.submit();
     }
-
 </script>
 
 <body>
-
 <FORM NAME = "detail_form" ACTION = "goodsCartAdd.jsp" METHOD = POST>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td align="center" valign="top">
-                <table width="815" border="0" cellspacing="0" cellpadding="0">
+            <td align="center" valign="top"><table width="815" border="0" cellspacing="0" cellpadding="0">
                     <%
+                        int check=0;
                         String id_ch = (String)session.getAttribute("G_ID");
                         ResultSet rs_ch = null;
                         Statement stmt_ch=con.createStatement();
                         String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
                         rs_ch=stmt_ch.executeQuery(strSQL_ch);
                         if(rs_ch.next()){
+                            check=1;
                     %>
                     <%@ include file="/includes/seller_top.jsp" %>
                     <%
@@ -79,8 +74,6 @@
                             <img src="/icons/sub_bg.png" width="810"/>
                         </td>
                     </tr>
-
-
                     <%
                         String sbar=request.getParameter("bar");
                         if(sbar==null)
@@ -108,7 +101,6 @@
                     }
                     else
                     {
-
                         String category         = rs.getString("category");
                         String product_name         = rs.getString("product_name");
                         int product_price         = rs.getInt("product_price");
@@ -125,7 +117,6 @@
                         stmt.executeUpdate(sql2);
 
                     %>
-
                     <tr>
                         <td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
                             <tr>
@@ -197,7 +188,14 @@
                                     </tr>
                                     <tr>
                                         <td align="center">
+                                            <%
+                                                if(check==0){
+                                            %>
                                             <input type = "button" id = "button2"  value = "장바구니 담기" onClick = "cartAdd();" onmouseover="this.style.cursor='hand';" class="submit_button"/>
+                                            <%
+                                                }
+                                                else out.print("<br>");
+                                            %>
                                         </td>
                                     </tr>
                                 </table>

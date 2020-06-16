@@ -55,9 +55,11 @@ try
     <td align="center" valign="top">
 		<table width="815" border="0" cellspacing="0" cellpadding="0">
 			<%@ include file="/includes/admin_top.jsp" %>
-      <tr>
-        <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
-      </tr>
+			<tr>
+				<td>
+					<img src="/icons/sub_bg.png" width="810"/>
+				</td>
+			</tr>
       <tr>
         <td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>

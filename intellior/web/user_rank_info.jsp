@@ -19,6 +19,11 @@
                 <table width="815" border="0" cellspacing="0" cellpadding="0">
                     <%@ include file="/includes/top.jsp" %>
                     <tr>
+                        <td>
+                            <img src="/icons/sub_bg.png" width="810"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td height="50" align="center" colspan="7" class="new_tit">회원 등급 안내</td>
                     </tr>
                     <tr>

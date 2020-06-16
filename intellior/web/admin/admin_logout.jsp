@@ -4,5 +4,5 @@
 
 		session.invalidate();
 
-		response.sendRedirect("/admin/admin_login.jsp");
+		response.sendRedirect("/index.jsp");
 %>

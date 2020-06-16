@@ -26,7 +26,9 @@
             <%@ include file="/includes/top.jsp" %>
             </tr>
             <tr>
-                <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+                <td>
+                    <img src="/icons/sub_bg.png" width="810"/>
+                </td>
             </tr>
             <tr>
                 <td width="547" height="45" align="left" class="new_tit">주문 상세보기</td>

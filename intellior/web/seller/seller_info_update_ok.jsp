@@ -37,7 +37,7 @@
     finally{
         if (stmt  != null) stmt.close();
         if (con   != null) con.close();
-        response.sendRedirect("seller_index.jsp");
+        response.sendRedirect("seller_info.jsp");
     }
 %>
 
