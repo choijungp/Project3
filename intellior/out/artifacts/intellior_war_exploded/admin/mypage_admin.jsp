@@ -13,7 +13,7 @@
             <table width="815" border="0" cellspacing="0" cellpadding="0">
                 <%@ include file="/includes/admin_top.jsp" %>
                 <tr>
-                    <td height="120" background="/icons/sub_bg.png">&nbsp;</td>
+                    <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
                 </tr>
                 <tr>
                     <td height="239" align="center" valign="top">
@@ -30,9 +30,6 @@
                                         </tr>
                                         <tr>
                                             <td height="50" align="center" colspan="7" class="new_tit"><a href="admin_sellerList.jsp">판매자 조회</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td height="50" align="center" colspan="7" class="new_tit"><a href="#">환경설정</a></td>
                                         </tr>
                                     </table>
                                 </td>

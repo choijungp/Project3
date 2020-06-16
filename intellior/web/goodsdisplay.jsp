@@ -4,14 +4,14 @@
 <%@ include file = "/includes/dbinfo.jsp" %>
 <HTML>
 <HEAD>
-  <TITLE> 상품 진열</TITLE>
-<link href="/includes/all.css" rel="stylesheet" type="text/css" />
+	<TITLE> 상품 진열</TITLE>
+	<link href="/includes/all.css" rel="stylesheet" type="text/css" />
 </HEAD>
 
 <BODY>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="center" valign="top"><table width="815" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" valign="top"><table width="815" border="0" cellspacing="0" cellpadding="0">
 			<%
 				String id_ch = (String)session.getAttribute("G_ID");
 				ResultSet rs_ch = null;
@@ -29,183 +29,188 @@
 			<%
 				}
 			%>
-      </tr>
-      <tr>
-        <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
-      </tr>
-      <tr>
-<%
-String strPageNum = request.getParameter("PageNum"); // 선택된 페이지 번호 참조
-if (strPageNum == null) {
-	strPageNum = "1";
-}
+			</tr>
+			<tr>
+				<td>
+					<img src="/icons/sub_bg.png" width="810"/>
+				</td>
+			</tr>
+			<tr>
+				<%
+					String strPageNum = request.getParameter("PageNum"); // 선택된 페이지 번호 참조
+					if (strPageNum == null) {
+						strPageNum = "1";
+					}
 
-int currentPage = Integer.parseInt(strPageNum);			// 현재 페이지
+					int currentPage = Integer.parseInt(strPageNum);         // 현재 페이지
 
-int pageSize	= 6;
+					int pageSize   = 6;
 
-ResultSet rs = null, rs2 = null;
-	
-Statement stmt  = con.createStatement();
+					ResultSet rs = null, rs2 = null;
 
-String category = request.getParameter("category");
-String search_ = request.getParameter("search_value");
+					Statement stmt  = con.createStatement();
+
+					String category = request.getParameter("category");
+					String search_ = request.getParameter("search_value");
 
 
-String SQL = "select * from product where category ='" + category + "'";
-rs2 = stmt.executeQuery(SQL);
+					String SQL = "select * from product where category ='" + category + "'";
+					rs2 = stmt.executeQuery(SQL);
 
-int totalRecords	= 0;  // ResultSet 객체 내의 레코드 수를 저장하기 위한 변수
-if (rs2.next() == false){  // 만약 테이블에 아무것도 없다면
-%>
-	<TD colspan=7><center>등록된 상품이 없습니다.</center></TD>      
-</TR>
-<% 
-}
-else
-{	
-%>
-	        <td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
-<%
-	totalRecords = rs2.getInt(1); 
+					int totalRecords   = 0;  // ResultSet 객체 내의 레코드 수를 저장하기 위한 변수
+					if (rs2.next() == false){  // 만약 테이블에 아무것도 없다면
+				%>
 
-	//SQL = "select top " + pageSize ;
-	SQL = "select product_name, product_price, product_id, product_thumnail ";
-	SQL = SQL  + " from product ";
+				<TD colspan=7><center>등록된 상품이 없습니다.</center></TD>
+			</TR>
+			<%
+			}
+			else
+			{
+			%>
+			<td align="center" valign="top"><table width="800" border="0" cellspacing="0" cellpadding="0">
+				<%
+					totalRecords = rs2.getInt(1);
 
-	SQL = SQL  + " where category = '" + category + "'" ;
-	
-	rs = stmt.executeQuery(SQL);	// 현재 페이지에 출력할 회원만 select
+					//SQL = "select top " + pageSize ;
+					SQL = "select product_name, product_price, product_id, product_thumnail ";
+					SQL = SQL  + " from product ";
 
-	int pageSize_temp = pageSize;			// 현재 표시될 라인을 하나씩 줄임
+					SQL = SQL  + " where category = '" + category + "'" ;
 
-	int cnt = 0;      // 
-	while(rs.next() && pageSize_temp > 0 ){
+					rs = stmt.executeQuery(SQL);   // 현재 페이지에 출력할 회원만 select
 
-		cnt ++;
+					int pageSize_temp = pageSize;         // 현재 표시될 라인을 하나씩 줄임
 
-		String n_product_name		= rs.getString("product_name");
-		String n_product_id		= rs.getString("product_id");
+					int cnt = 0;      //
+					while(rs.next() && pageSize_temp > 0 ){
 
-		int n_product_price			= rs.getInt("product_price");
-		String n_product_thumnail	= rs.getString("product_thumnail");
+						cnt ++;
 
-		if ( cnt == 1) {
-	%>
-          <tr>
-            <td height="45" align="left" class="new_tit"><%= category %></td>
-            <td height="45" colspan="3" align="right">HOME &lt; <%= category %></td>
-          </tr>
-          <tr>
-<%
-		}
-%>
+						String n_product_name      = rs.getString("product_name");
+						String n_product_id      = rs.getString("product_id");
+
+						int n_product_price         = rs.getInt("product_price");
+						String n_product_thumnail   = rs.getString("product_thumnail");
+
+						if ( cnt == 1) {
+				%>
+				<tr>
+					<td height="45" align="left" class="new_tit"><%= category %></td>
+					<td height="45" colspan="3" align="right">HOME &lt; <%= category %></td>
+				</tr>
+				<tr>
+					<%
+						}
+					%>
 					<TD>
-						<TABLE border = "1" cellspacing = "1" cellpadding = "2" width = "200"> 			
-						<TR>
+						<TABLE border = "1" cellspacing = "1" cellpadding = "2" width = "200">
+							<TR>
 								<TD>
 									<a href="goodsdetail.jsp?product_id=<%= n_product_id %>"><img src="/images/<%= n_product_thumnail %>" height=200 width =200></a>
 								</TD>
-						</TR>			
-						<TR>
+							</TR>
+							<TR>
 								<TD align=center>
 									<%= n_product_name %>
 								</TD>
-						</TR>			
-						<TR>
-							<TD align=center>
-									<% 		
-											DecimalFormat df = new DecimalFormat("###,###,##0"); 
-											out.println(df.format(n_product_price));
+							</TR>
+							<TR>
+								<TD align=center>
+									<%
+										DecimalFormat df = new DecimalFormat("###,###,##0");
+										out.println(df.format(n_product_price));
 									%>
-								원
+									원
 								</TD>
-						</TR>			
-						</TABLE> 			
-				</TD>  
-			
-	<%		
-		pageSize_temp = pageSize_temp - 1;      // 현재 표시될 라인을 하나씩 줄임
+							</TR>
+						</TABLE>
+					</TD>
 
-	  if (cnt == 3)
-			out.print("</TR><TR>");
-	}
+					<%
+							pageSize_temp = pageSize_temp - 1;      // 현재 표시될 라인을 하나씩 줄임
 
-}
-%>
+							if (cnt == 3)
+								out.print("</TR><TR>");
+						}
+
+					%>
 				</tr>
-        </table></td>
-				</tr>
-				<tr><td height=30></td>
-				</tr>
-				<tr>
-					<td colspan=4 align=center>
-<%
-	// 총 페이지 수 계산
-	int intTotPages	= 0;
-	int intR		= totalRecords % pageSize;
-	if	(intR == 0) {
-		intTotPages = totalRecords / pageSize;
-	}
-	else
-	{
-		intTotPages = totalRecords / pageSize + 1;          // 나머지가 0 보다 크면 총 페이지수는 몫 + 1
-	}
+			</table></td>
+			<%
+				}
+			%>
+			</tr>
+			<tr>
+				<td colspan=4 align=center>
+					<%
+						// 총 페이지 수 계산
+						int intTotPages   = 0;
+						int intR      = totalRecords % pageSize;
+						if   (intR == 0) {
+							intTotPages = totalRecords / pageSize;
+						}
+						else
+						{
+							intTotPages = totalRecords / pageSize + 1;          // 나머지가 0 보다 크면 총 페이지수는 몫 + 1
+						}
 
-	int intGrpSize  = 1;									// 그룹 당 페이지 수 설정                   
-	int currentGrp  = 0;									// 현 그룹 No.
+						int intGrpSize  = 1;                           // 그룹 당 페이지 수 설정
+						int currentGrp  = 0;                           // 현 그룹 No.
 
-	intR						= currentPage % intGrpSize;
-	if	(intR == 0) {
-		currentGrp		= currentPage / intGrpSize;
-	}
-	else
-	{
-		currentGrp	= currentPage / intGrpSize + 1;
-	}
+						intR                  = currentPage % intGrpSize;
+						if   (intR == 0) {
+							currentGrp      = currentPage / intGrpSize;
+						}
+						else
+						{
+							currentGrp   = currentPage / intGrpSize + 1;
+						}
 
-	int intGrpStartPage	= (currentGrp   - 1) * intGrpSize + 1;	// 현 그룹 시작 페이지
-	int intGrpEndPage		=  currentGrp * intGrpSize;							// 현 그룹   끝 페이지
-	if (intGrpEndPage > intTotPages){
-		intGrpEndPage			= intTotPages;
-	}
-	if (currentGrp > 1){
-%>
-	 [<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
-<%
-	}
+						int intGrpStartPage   = (currentGrp   - 1) * intGrpSize + 1;   // 현 그룹 시작 페이지
+						int intGrpEndPage      =  currentGrp * intGrpSize;                     // 현 그룹   끝 페이지
+						if (intGrpEndPage > intTotPages){
+							intGrpEndPage         = intTotPages;
+						}
+						if (currentGrp > 1){
+					%>
+					[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
+					<%
+						}
 
-	int	intGrpPageCount		= intGrpSize;								// 그룹 당 페이지 수    
-	int intIndex					= intGrpStartPage;					// 현 그룹 시작 페이지
+						int   intGrpPageCount      = intGrpSize;                        // 그룹 당 페이지 수
+						int intIndex               = intGrpStartPage;               // 현 그룹 시작 페이지
 
-	while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
-%>
-		[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp;
-<%
-		intIndex = intIndex + 1;
-		intGrpPageCount    = intGrpPageCount    - 1;
-	}
+						while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
+					%>
+					[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp;
+					<%
+							intIndex = intIndex + 1;
+							intGrpPageCount    = intGrpPageCount    - 1;
+						}
 
-	if (intIndex <= intTotPages){
-%>
-		[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intIndex %>">다음</A>]
-<%
-	}
-%>
-					</td >
-				</tr>
+						if (intIndex <= intTotPages){
+					%>
+					[<A href="goodsdisplay.jsp?category=<%=category%>&PageNum=<%= intIndex %>">다음</A>]
+					<%
+						}
+					%>
+				</td >
+			</tr>
 
-      </tr>
-			<%@ include file="/includes/bottom.jsp" %>
-    </table></td>
-  </tr>
+			</tr>
+			<tr align="center">
+				<%@ include file="/includes/bottom.jsp" %>
+			</tr>
+		</table></td>
+	</tr>
 </table>
 </body>
 </html>
 <%
-if (stmt  != null) stmt.close();
-if (rs    != null) rs.close();
-if (rs2   != null) rs2.close();
-if (con   != null) con.close();
+	if (stmt  != null) stmt.close();
+	if (rs    != null) rs.close();
+	if (rs2   != null) rs2.close();
+	if (con   != null) con.close();
 %>
 </BODY>

@@ -19,27 +19,28 @@
             </tr>
             <tr>
                 <%
-                    DecimalFormat df2	= new DecimalFormat("###,###,##0");
+                    DecimalFormat df2   = new DecimalFormat("###,###,##0");
                     String strPageNum = request.getParameter("PageNum"); // 선택된 페이지 번호 참조
                     if (strPageNum == null) {
                         strPageNum = "1";
                     }
 
-                    int currentPage = Integer.parseInt(strPageNum);			// 현재 페이지
+                    int currentPage = Integer.parseInt(strPageNum);         // 현재 페이지
 
-                    int pageSize	= 6;
+                    int pageSize   = 6;
 
                     ResultSet rs = null, rs2 = null;
 
                     Statement stmt  = con.createStatement();
-                    String userid			=	(String)session.getAttribute("G_ID");
+                    Statement stmt2  = con.createStatement();
+                    String userid         =   (String)session.getAttribute("G_ID");
                     String cat1cd = request.getParameter("pcat1");
 
                     String SQL = "select count(*) from intelior.order";
                     SQL = SQL +" where user_id = '" + userid + "'";
                     rs2 = stmt.executeQuery(SQL);
 
-                    int totalRecords	= 0;  // ResultSet 객체 내의 레코드 수를 저장하기 위한 변수
+                    int totalRecords   = 0;  // ResultSet 객체 내의 레코드 수를 저장하기 위한 변수
                     if (rs2.next() == false){  // 만약 테이블에 아무것도 없다면
                 %>
                 <TD colspan=7><center>주문이 없습니다.</center></TD>
@@ -56,25 +57,42 @@
                     SQL = SQL +" from intelior.order a inner join product b on a.product_id = b.product_id ";
                     SQL = SQL +" where user_id = '" + userid + "' group by order_code";
 
-                    rs = stmt.executeQuery(SQL);	// 현재 페이지에 출력할 회원만 select
+                    rs = stmt.executeQuery(SQL);   // 현재 페이지에 출력할 회원만 select
 
-                    int pageSize_temp = pageSize;			// 현재 표시될 라인을 하나씩 줄임
+                    int pageSize_temp = pageSize;         // 현재 표시될 라인을 하나씩 줄임
 
                     int cnt = 0;      //
                     while(rs.next() && pageSize_temp > 0 ){
 
                         cnt ++;
 
-                        int product_id			= rs.getInt("product_id");
-                        String product_thumnail		= rs.getString("product_thumnail");
+                        int product_id         = rs.getInt("product_id");
+                        String product_thumnail      = rs.getString("product_thumnail");
                         int order_count = rs.getInt("count(a.product_id)")-1;
-                        String seller_id			= rs.getString("seller_id"); //seller_name으로 수정
-                        int order_state		= rs.getInt("order_state");
-                        String order_code		= rs.getString("order_code");
-                        int order_payment		= rs.getInt("order_payment");
-                        String product_name		= rs.getString("product_name");
-                        String order_date		= rs.getString("order_date");
+                        String seller_id         = rs.getString("seller_id"); //seller_name으로 수정
+                        int order_state      = rs.getInt("order_state");
+                        String order_code      = rs.getString("order_code");
+                        int order_payment      = rs.getInt("order_payment");
+                        String product_name      = rs.getString("product_name");
+                        String order_date      = rs.getString("order_date");
 
+                        String InSQL = "select order_state ";
+                        InSQL = InSQL +"from intelior.order a ";
+                        InSQL = InSQL +" where order_code = " + order_code ;
+
+                        rs2 = stmt2.executeQuery(InSQL);   // 현재 페이지에 출력할 회원만 select
+                        int total_orderState = 0;
+                        int total_order = 0;
+                        while(rs2.next()){
+                            total_order++;
+                            int current_order_state      = rs2.getInt("order_state");
+                            if(current_order_state == 1){
+                                total_orderState++;
+                            }
+                        }
+                        if(total_order==total_orderState)
+                            order_state = 1;
+                        else order_state =0;
                         if ( cnt == 1) {
                 %>
                 <tr>
@@ -149,9 +167,9 @@
                 <td colspan=4 align=center>
                     <%
                         // 총 페이지 수 계산
-                        int intTotPages	= 0;
-                        int intR		= totalRecords % pageSize;
-                        if	(intR == 0) {
+                        int intTotPages   = 0;
+                        int intR      = totalRecords % pageSize;
+                        if   (intR == 0) {
                             intTotPages = totalRecords / pageSize;
                         }
                         else
@@ -159,22 +177,22 @@
                             intTotPages = totalRecords / pageSize + 1;          // 나머지가 0 보다 크면 총 페이지수는 몫 + 1
                         }
 
-                        int intGrpSize  = 1;									// 그룹 당 페이지 수 설정
-                        int currentGrp  = 0;									// 현 그룹 No.
+                        int intGrpSize  = 1;                           // 그룹 당 페이지 수 설정
+                        int currentGrp  = 0;                           // 현 그룹 No.
 
-                        intR						= currentPage % intGrpSize;
-                        if	(intR == 0) {
-                            currentGrp		= currentPage / intGrpSize;
+                        intR                  = currentPage % intGrpSize;
+                        if   (intR == 0) {
+                            currentGrp      = currentPage / intGrpSize;
                         }
                         else
                         {
-                            currentGrp	= currentPage / intGrpSize + 1;
+                            currentGrp   = currentPage / intGrpSize + 1;
                         }
 
-                        int intGrpStartPage	= (currentGrp   - 1) * intGrpSize + 1;	// 현 그룹 시작 페이지
-                        int intGrpEndPage		=  currentGrp * intGrpSize;							// 현 그룹   끝 페이지
+                        int intGrpStartPage   = (currentGrp   - 1) * intGrpSize + 1;   // 현 그룹 시작 페이지
+                        int intGrpEndPage      =  currentGrp * intGrpSize;                     // 현 그룹   끝 페이지
                         if (intGrpEndPage > intTotPages){
-                            intGrpEndPage			= intTotPages;
+                            intGrpEndPage         = intTotPages;
                         }
                         if (currentGrp > 1){
                     %>
@@ -182,8 +200,8 @@
                     <%
                         }
 
-                        int	intGrpPageCount		= intGrpSize;								// 그룹 당 페이지 수
-                        int intIndex					= intGrpStartPage;					// 현 그룹 시작 페이지
+                        int   intGrpPageCount      = intGrpSize;                        // 그룹 당 페이지 수
+                        int intIndex               = intGrpStartPage;               // 현 그룹 시작 페이지
 
                         while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
                     %>
