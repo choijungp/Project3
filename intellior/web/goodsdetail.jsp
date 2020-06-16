@@ -33,7 +33,7 @@
             alert("로그인을 하여 주시기 바랍니다.");
             return false;
         }
-
+        alert("상품이 장바구니에 추가되었습니다.");
         document.detail_form.action = "goodsCartAdd.jsp";
         document.detail_form.submit();
     }
