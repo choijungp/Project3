@@ -117,7 +117,6 @@
                     <tr>
                         <td height="25" align="center"><br>
                             <input type = "button" id = "button"  value = "정보 변경"  onClick = "updateChk();"/>
-                            <input type = "button" id = "button2" value = "회원 탈퇴" />
                         </td>
                     </tr>
                     </tr>

@@ -55,18 +55,19 @@
 										strPageNum = "1";
 									}
 									int currentPage = Integer.parseInt(strPageNum);			// 현재 페이지
-									int pageSize		= 5;
+									int pageSize		= 10;
 									ResultSet rs = null, rs2 = null;
 
-									Statement stmt  = con.createStatement();
+									Statement stmt = null, stmt2 =null;
+									stmt = con.createStatement();
+									stmt2 = con.createStatement();
 
-									String SQL = null;
-									SQL = "select review_id, review_title, review_grade, user_id FROM review where product_id ='" + product_id + "'";
+									String strSQL = "Select * from review where product_id='" + product_id + "'";
+									rs2 = stmt.executeQuery(strSQL);
 
-									rs2 = stmt.executeQuery(SQL);
-									int totalRecords	= 0;			// ResultSet 객체 내의 레코드 수를 저장하기 위한 변수
-									if (rs2.next() == false){		// 만약 테이블에 아무것도 없다면
-								%>
+									int totalRecords = 0;
+									if(rs2.next() == false){
+%>
 								<tr>
 									<TD colspan=7><center>등록된 리뷰가 없습니다</center></TD>
 								</tr>
@@ -74,8 +75,13 @@
 								}
 								else
 								{
-									totalRecords = rs2.getInt(1);
-									rs = stmt.executeQuery(SQL);			// 현재 페이지에 출력할 상품만 select
+									strSQL = "select review_id, review_title, review_grade, user_id FROM review where product_id ='" + product_id + "'";
+									strSQL = strSQL + " ORDER BY review_id desc limit ";
+									strSQL = strSQL + (currentPage-1)*pageSize + ", " + pageSize;
+
+									rs = stmt.executeQuery(strSQL);
+
+
 									int pageSize_temp = pageSize;			// 현재 표시될 라인을 하나씩 줄임
 									while(rs.next() && pageSize_temp > 0){
 										String review_id			= rs.getString("review_id");
@@ -101,21 +107,27 @@
 									}
 								%>
 								<tr>
-									<td colspan = 7 align="center" bgcolor="#EEEEEE">
-
+									<td colspan = 7 ALIGN = "center" bgcolor="#FFFFFF">
 										<%
-											// 총 페이지 수 계산
-											int intTotPages	= 0;
-											int intR		= totalRecords % pageSize;
-											if	(intR == 0) {
-												intTotPages = totalRecords / pageSize;
+
+											ResultSet rs_page = null;
+											Statement stmt_page=con.createStatement();
+											String total = "SELECT count(*) cnt FROM review where product_id ='"+product_id+"'"; //11
+											rs_page = stmt_page.executeQuery(total);
+											rs_page.next();
+											totalRecords = rs_page.getInt(1);
+											int Totpages = 0;
+											int intR = totalRecords % pageSize;
+											if (intR == 0){
+												Totpages = totalRecords / pageSize;
 											}
-											else
-											{
-												intTotPages = totalRecords / pageSize + 1;          // 나머지가 0 보다 크면 총 페이지수는 몫 + 1
+											else{
+												Totpages = totalRecords / pageSize + 1;          // 나머지가 0 보다 크면 총 페이지수는 몫 + 1
 											}
+
 											int intGrpSize  = 10;									// 그룹 당 페이지 수 설정
 											int currentGrp  = 0;									// 현 그룹 No.
+
 											intR						= currentPage % intGrpSize;
 											if	(intR == 0) {
 												currentGrp		= currentPage / intGrpSize;
@@ -124,28 +136,31 @@
 											{
 												currentGrp	= currentPage / intGrpSize + 1;
 											}
+
 											int intGrpStartPage	= (currentGrp   - 1) * intGrpSize + 1;	// 현 그룹 시작 페이지
 											int intGrpEndPage		=  currentGrp * intGrpSize;							// 현 그룹   끝 페이지
-											if (intGrpEndPage > intTotPages){
-												intGrpEndPage			= intTotPages;
+											if (intGrpEndPage > Totpages){
+												intGrpEndPage			= Totpages;
 											}
 											if (currentGrp > 1){
 										%>
-										[<A href="review_list.jsp?PageNum=<%= intGrpStartPage - 1 %>">이전</A>]
+										<A href="review_list.jsp?product_id=<%=product_id%>&PageNum=<%= intGrpStartPage - 1 %>">이전</A>
 										<%
 											}
+
 											int	intGrpPageCount		= intGrpSize;								// 그룹 당 페이지 수
-											int intIndex					= intGrpStartPage;					// 현 그룹 시작 페이지
+											int intIndex		    = intGrpStartPage;					// 현 그룹 시작 페이지
+
 											while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
 										%>
-										[<A href="review_list.jsp?PageNum=<%= intIndex %>"><%= intIndex %></A>] &nbsp;
+										<A href="review_list.jsp?product_id=<%=product_id%>&PageNum=<%= intIndex %>">[<%= intIndex %>]</A>
 										<%
 												intIndex = intIndex + 1;
 												intGrpPageCount    = intGrpPageCount    - 1;
 											}
-											if (intIndex <= intTotPages){
+											if (intIndex <= Totpages){
 										%>
-										[<A href="review_list.jsp?PageNum=<%= intIndex %>">다음</A>]
+										<A href="review_list.jsp?product_id=<%=product_id%>&PageNum=<%= intIndex %>">다음</A>
 										<%
 											}
 										%>
