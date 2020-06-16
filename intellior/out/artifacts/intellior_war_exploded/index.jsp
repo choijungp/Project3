@@ -17,7 +17,24 @@
     <tr>
         <td align="center" valign="top">
             <table width="815" border="0" cellspacing="0" cellpadding="0">
+
+                <%
+                    String id_ch = (String)session.getAttribute("G_ID");
+                    ResultSet rs_ch = null;
+                    Statement stmt_ch=con.createStatement();
+                    String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
+                    rs_ch=stmt_ch.executeQuery(strSQL_ch);
+                    if(rs_ch.next()){
+                %>
+                <%@ include file="/includes/seller_top.jsp" %>
+                <%
+                }
+                else{
+                %>
                 <%@ include file="/includes/top.jsp" %>
+                <%
+                    }
+                %>
                 <tr>
                     <td height="284"><img src="/icons/main.jpg" width="815" alt="메인" /></td>
                 </tr>
@@ -25,7 +42,7 @@
                     ResultSet rs = null;
                     Statement stmt  = con.createStatement();
 
-                    String SQL = "select * from product order by product_id desc";
+                    String SQL = "select * from product order by product_id desc limit 3";
                     rs = stmt.executeQuery(SQL);
                 %>
                 <tr>
@@ -78,7 +95,7 @@
                     ResultSet rs2 = null;
                     Statement stmt2  = con.createStatement();
 
-                    String SQL2 = "select * from product order by product_view_count DESC";
+                    String SQL2 = "select * from product order by product_view_count DESC limit 3";
                     rs2 = stmt2.executeQuery(SQL2);
                 %>
                 <tr>

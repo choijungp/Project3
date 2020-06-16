@@ -27,12 +27,12 @@
         </tr>
         <tr>
             <td align="left">
-                <a href="/goodsdisplay.jsp?category=가구" class="navi">가구</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="/goodsdisplay.jsp?category=침구" class="navi">침구</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="/goodsdisplay.jsp?category=소품" class="navi">소품</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/goodsdisplay.jsp?category=가구" class="navi">가구</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/goodsdisplay.jsp?category=침구" class="navi">침구</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/goodsdisplay.jsp?category=소품" class="navi">소품</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="/goodsdisplay.jsp?category=반려동물" class="navi">반려동물</a>
             </td>
-            <td align="right" width="220">
+            <td align="right" width="267">
                 <FORM NAME="frm1" ACTION="/goodsSearch.jsp" METHOD="post">
                     <div class="search_div">
                         <select name="search_key" class="search_select">
@@ -40,6 +40,7 @@
                             <option value="가구">가구</option>
                             <option value="침구">침구</option>
                             <option value="소품">소품</option>
+                            <option value="반려동물">반려동물</option>
                         </select>
                         <INPUT TYPE="text" NAME="search_value" placeholder="검색어 입력" class="search_input">
                         <button class="search_button" onmouseover="this.style.cursor='hand';"><img src="/icons/search.png" height="80%" ></button>

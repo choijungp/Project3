@@ -218,11 +218,15 @@
                             </tr>
                         </table></td>
                     </tr>
+
                     <tr>
-                        <td align="center" valign="top">&nbsp;</td>
+                        <td align="center" valign="top">
+                            <%@ include file="/includes/bottom.jsp" %>&nbsp;
+                        </td>
                     </tr>
-                    <%@ include file="/includes/bottom.jsp" %>
-                </table></td>
+
+                </table>
+            </td>
         </tr>
     </table>
 </form>

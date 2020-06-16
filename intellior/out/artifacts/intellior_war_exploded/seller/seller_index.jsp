@@ -22,7 +22,7 @@
 					ResultSet rs = null;
 					Statement stmt  = con.createStatement();
 
-					String SQL = "select * from product";
+					String SQL = "select * from product order by product_id desc limit 0, 3";
 					rs = stmt.executeQuery(SQL);
 				%>
 				<tr>
@@ -75,7 +75,7 @@
 					ResultSet rs2 = null;
 					Statement stmt2  = con.createStatement();
 
-					String SQL2 = "select * from product order by product_view_count DESC";
+					String SQL2 = "select * from product order by product_view_count DESC limit 0, 3";
 					rs2 = stmt2.executeQuery(SQL2);
 				%>
 				<tr>

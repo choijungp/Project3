@@ -68,7 +68,7 @@
 										strPageNum = "1";
 									}
 									int currentPage = Integer.parseInt(strPageNum);			// 현재 페이지
-									int pageSize		= 5;
+									int pageSize		= 10;
 									ResultSet rs = null, rs2 = null;
 
 									Statement stmt  = con.createStatement();

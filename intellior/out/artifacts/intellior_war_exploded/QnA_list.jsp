@@ -15,9 +15,27 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="center" valign="top"><table width="815" border="0" cellspacing="0" cellpadding="0">
+                <%
+                        String id_ch = (String)session.getAttribute("G_ID");
+                        ResultSet rs_ch = null;
+                        Statement stmt_ch=con.createStatement();
+                        String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
+                        rs_ch=stmt_ch.executeQuery(strSQL_ch);
+                        if(rs_ch.next()){
+                    %>
+            <%@ include file="/includes/seller_top.jsp" %>
+                <%
+                        }
+                        else{
+                    %>
             <%@ include file="/includes/top.jsp" %>
+                <%
+                        }
+                    %>
             <tr>
-                <td height="80" background="/icons/sub_bg.png">&nbsp;</td>
+                <td>
+                    <img src="/icons/sub_bg.png" width="810"/>
+                </td>
             </tr>
             <tr>
                 <td align="center" valign="top">
@@ -120,34 +138,32 @@
                                         <TD ALIGN = "center" bgcolor="#FFFFFF"><%= writer      %></TD>
                                     </TR>
                                     <%
-                                                                pageSize_temp = pageSize_temp - 1;      // 현재 표시될 라인을 하나씩 줄임
+                                                pageSize_temp = pageSize_temp - 1;      // 현재 표시될 라인을 하나씩 줄임
 
                                             } // while(rs.next() && pageSize_temp > 0) end
 
                                         } // if (rs2.next() == false) else end
                                     %>
-
-                                    <%
-                                        String id_ch = (String)session.getAttribute("G_ID");
-                                        ResultSet rs_ch = null;
-                                        Statement stmt_ch=con.createStatement();
-                                        String strSQL_ch="SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
-                                        rs_ch=stmt_ch.executeQuery(strSQL_ch);
-                                        if(!rs_ch.next()){
-                                    %>
                                     <td colspan="7" align="center" valign="top" bgcolor="#FFFFFF">
                                         <table>
-                                    <tr>
-                                        <td><a href="./goodsdetail.jsp?product_id=<%= product_id %>">[제품 상세보기]           </a></td>
-                                        <td><a href="./qna_write.jsp?product_id=<%= product_id %>">            [글쓰기]  </a></td>
-                                    </tr>
-                                        </table>
-                                    </td>
+                                            <tr>
+                                                <td><a href="./goodsdetail.jsp?product_id=<%= product_id %>">[제품 상세보기]           </a></td>
+                                    <%
+                                        ResultSet rs5 = null;
+                                        Statement stmt5 = con.createStatement();
+                                        String SQL = "SELECT seller_id FROM seller WHERE seller_id='"+ id_ch +"'";
+                                        rs5=stmt5.executeQuery(SQL);
+                                        if(!rs5.next()){
+                                    %>
+                                                <td><a href="./qna_write.jsp?product_id=<%= product_id %>">            [글쓰기]  </a></td>
                                     <%
                                         }
                                     %>
-                                        <tr>
-                                            <td colspan = 7 ALIGN = "center" bgcolor="#FFFFFF">
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <tr>
+                                        <td colspan = 7 ALIGN = "center" bgcolor="#FFFFFF">
                                             <%
 
                                                 ResultSet rs_page = null;
@@ -165,22 +181,22 @@
                                                     Totpages = totalRecords / pageSize + 1;          // 나머지가 0 보다 크면 총 페이지수는 몫 + 1
                                                 }
 
-                                                int intGrpSize  = 10;									// 그룹 당 페이지 수 설정
-                                                int currentGrp  = 0;									// 현 그룹 No.
+                                                int intGrpSize  = 10;                           // 그룹 당 페이지 수 설정
+                                                int currentGrp  = 0;                           // 현 그룹 No.
 
-                                                intR						= currentPage % intGrpSize;
-                                                if	(intR == 0) {
-                                                    currentGrp		= currentPage / intGrpSize;
+                                                intR                  = currentPage % intGrpSize;
+                                                if   (intR == 0) {
+                                                    currentGrp      = currentPage / intGrpSize;
                                                 }
                                                 else
                                                 {
-                                                    currentGrp	= currentPage / intGrpSize + 1;
+                                                    currentGrp   = currentPage / intGrpSize + 1;
                                                 }
 
-                                                int intGrpStartPage	= (currentGrp   - 1) * intGrpSize + 1;	// 현 그룹 시작 페이지
-                                                int intGrpEndPage		=  currentGrp * intGrpSize;							// 현 그룹   끝 페이지
+                                                int intGrpStartPage   = (currentGrp   - 1) * intGrpSize + 1;   // 현 그룹 시작 페이지
+                                                int intGrpEndPage      =  currentGrp * intGrpSize;                     // 현 그룹   끝 페이지
                                                 if (intGrpEndPage > Totpages){
-                                                    intGrpEndPage			= Totpages;
+                                                    intGrpEndPage         = Totpages;
                                                 }
                                                 if (currentGrp > 1){
                                             %>
@@ -188,8 +204,8 @@
                                             <%
                                                 }
 
-                                                int	intGrpPageCount		= intGrpSize;								// 그룹 당 페이지 수
-                                                int intIndex		    = intGrpStartPage;					// 현 그룹 시작 페이지
+                                                int   intGrpPageCount      = intGrpSize;                        // 그룹 당 페이지 수
+                                                int intIndex          = intGrpStartPage;               // 현 그룹 시작 페이지
 
                                                 while (intGrpPageCount > 0 && intIndex <= intGrpEndPage){
                                             %>
@@ -204,8 +220,8 @@
                                             <%
                                                 }
                                             %>
-                                            </td>
-                                        </tr>
+                                        </td>
+                                    </tr>
 
 
                                 </TABLE><br><br>

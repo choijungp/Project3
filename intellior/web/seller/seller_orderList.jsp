@@ -32,6 +32,7 @@
                     ResultSet rs = null, rs2 = null;
 
                     Statement stmt  = con.createStatement();
+                    Statement stmt2  = con.createStatement();
                     String sellerid         =   (String)session.getAttribute("G_ID");
                     String cat1cd = request.getParameter("pcat1");
 
@@ -73,6 +74,25 @@
                         int order_payment      = rs.getInt("sum(b.product_price*a.order_count)");
                         String product_name      = rs.getString("product_name");
                         String order_date      = rs.getString("order_date");
+
+
+                        String InSQL = "select order_state ";
+                        InSQL = InSQL +"from intelior.order a ";
+                        InSQL = InSQL +" where order_code = " + order_code +" and a.seller_id = '" +sellerid+ "'" ;
+
+                        rs2 = stmt2.executeQuery(InSQL);   // 현재 페이지에 출력할 회원만 select
+                        int total_orderState = 0;
+                        int total_order = 0;
+                        while(rs2.next()){
+                            total_order++;
+                            int current_order_state      = rs2.getInt("order_state");
+                            if(current_order_state == 1){
+                                total_orderState++;
+                            }
+                        }
+                        if(total_order==total_orderState)
+                            order_state = 1;
+                        else order_state =0;
 
                         if ( cnt == 1) {
                 %>

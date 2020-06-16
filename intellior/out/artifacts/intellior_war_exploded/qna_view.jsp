@@ -134,6 +134,7 @@
 										</tr>
 										<tr>
 											<td colspan=2 align=center  bgcolor="#FFFFFF">
+												<INPUT TYPE = "button" VALUE = "목록 돌아가기" onclick="goList()">
 												<%
 													if(now_id.equals(writer1))
 													{
@@ -150,7 +151,7 @@
 												<%
 													}
 												%>
-												<INPUT TYPE = "button" VALUE = "목록 돌아가기" onclick="goList()"></td>
+											</td>
 										</tr>
 									</table>
 								</td>
