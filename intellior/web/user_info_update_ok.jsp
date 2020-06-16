@@ -43,6 +43,6 @@
     finally{
         if (stmt  != null) stmt.close();
         if (con   != null) con.close();
-        response.sendRedirect("user_info_update.jsp");
+        response.sendRedirect("/user_Info.jsp");
     }
 %>

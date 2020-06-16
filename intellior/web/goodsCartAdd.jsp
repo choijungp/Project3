@@ -33,6 +33,6 @@
 	finally{
 		if (stmt  != null) stmt.close();
 		if (con   != null) con.close();
-		response.sendRedirect("index.jsp");
+		response.sendRedirect("/goodsdetail.jsp?product_id="+product_id);
 	}
 %>
